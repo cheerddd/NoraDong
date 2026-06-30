@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Native Workflow · Nora Dong</title>
+<meta name="description" content="Nora Dong 的 AI Native 产品工作流——Claude、Cursor、Figma 深度融入 PRD 生成、竞品分析、网站开发、客户沟通全链路">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8f7f3;--bg2:#f0efe9;--white:#ffffff;--border:rgba(0,0,0,0.07);
+  --text:#1a1814;--text2:#4a4640;--muted:#9a9590;
+  --indigo:#4a5cf0;--indigo-l:#eef0fe;--indigo-m:rgba(74,92,240,0.12);
+  --rose:#e8547a;--rose-l:#fef0f3;
+  --amber:#d4872a;--amber-l:#fef6ec;
+  --sage:#4a9b7a;--sage-l:#edf7f3;
+  --violet:#7c5cbf;--violet-l:#f3f0fb;
+  --shadow-s:0 2px 16px rgba(0,0,0,0.06);
+  --shadow-m:0 8px 40px rgba(0,0,0,0.09);
+  --r:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;}
+
+#cur{width:8px;height:8px;background:var(--indigo);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;}
+#cur-r{width:32px;height:32px;border:1.5px solid rgba(74,92,240,.4);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .2s,height .2s,border-color .2s,background .2s;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:20px 64px;display:flex;justify-content:space-between;align-items:center;transition:all .4s;}
+nav.scrolled{background:rgba(248,247,243,0.94);backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--border);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--text);text-decoration:none;}
+.nav-back{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;}
+.nav-back:hover{color:var(--indigo);}
+
+/* HERO */
+.hero{padding:140px 64px 80px;max-width:1100px;margin:0 auto;}
+.eyebrow{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards;}
+.eyebrow-line{width:28px;height:2px;background:var(--indigo);border-radius:2px;}
+h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:500;line-height:1.05;margin-bottom:16px;opacity:0;animation:fadeUp .7s .2s forwards;}
+h1 em{font-style:italic;color:var(--indigo);}
+.subtitle{font-size:17px;color:var(--text2);line-height:1.7;max-width:600px;margin-bottom:48px;opacity:0;animation:fadeUp .7s .3s forwards;}
+
+/* STAT BAR */
+.stat-bar{background:var(--text);border-radius:24px;padding:40px 64px;margin:0 0 96px;display:grid;grid-template-columns:repeat(4,1fr);position:relative;overflow:hidden;}
+.stat-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--indigo),var(--violet),var(--rose),var(--amber));}
+.sb-item{text-align:center;padding:0 16px;}
+.sb-item+.sb-item{border-left:1px solid rgba(255,255,255,.08);}
+.sb-num{font-family:'Playfair Display',serif;font-size:38px;font-weight:500;color:#fff;line-height:1;margin-bottom:6px;}
+.sb-label{font-size:12px;color:rgba(255,255,255,.45);}
+
+/* FLOW SECTION */
+.section{max-width:1100px;margin:0 auto;padding:0 64px 96px;}
+.sec-label{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:16px;}
+.sec-line{width:28px;height:2px;background:var(--indigo);border-radius:2px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);font-weight:500;margin-bottom:28px;line-height:1.2;}
+.prose{font-size:15px;line-height:1.9;color:var(--text2);max-width:720px;}
+.prose strong{color:var(--text);font-weight:500;}
+
+/* WORKFLOW PIPELINE */
+.pipeline{display:flex;align-items:stretch;gap:0;margin-top:48px;overflow-x:auto;padding-bottom:8px;}
+.pipe-step{flex:1;min-width:140px;background:var(--white);border:1px solid var(--border);border-radius:0;padding:28px 20px;position:relative;transition:transform .3s,box-shadow .3s;}
+.pipe-step:first-child{border-radius:16px 0 0 16px;}
+.pipe-step:last-child{border-radius:0 16px 16px 0;}
+.pipe-step:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);z-index:2;}
+.pipe-step::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--indigo);z-index:3;background:var(--bg);padding:4px 2px;}
+.pipe-step:last-child::after{display:none;}
+.pipe-icon{font-size:24px;margin-bottom:12px;}
+.pipe-tool{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--indigo);font-weight:600;margin-bottom:6px;}
+.pipe-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.pipe-desc{font-size:12px;line-height:1.7;color:var(--muted);}
+.pipe-s1{border-top:3px solid var(--indigo);}
+.pipe-s2{border-top:3px solid var(--violet);}
+.pipe-s3{border-top:3px solid var(--rose);}
+.pipe-s4{border-top:3px solid var(--amber);}
+.pipe-s5{border-top:3px solid var(--sage);}
+.pipe-s6{border-top:3px solid var(--indigo);}
+
+/* USE CASES */
+.cases-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px;}
+.case-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:32px;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden;}
+.case-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.case-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.cc-indigo::before{background:var(--indigo);}
+.cc-violet::before{background:var(--violet);}
+.cc-rose::before{background:var(--rose);}
+.cc-amber::before{background:var(--amber);}
+.case-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;padding:4px 12px;border-radius:100px;margin-bottom:16px;}
+.tag-indigo{background:var(--indigo-l);color:var(--indigo);}
+.tag-violet{background:var(--violet-l);color:var(--violet);}
+.tag-rose{background:var(--rose-l);color:var(--rose);}
+.tag-amber{background:var(--amber-l);color:var(--amber);}
+.case-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:12px;}
+.case-desc{font-size:13px;line-height:1.85;color:var(--text2);margin-bottom:20px;}
+.case-result{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sage);font-weight:500;padding:10px 14px;background:var(--sage-l);border-radius:10px;}
+
+/* PROMPT SHOWCASE */
+.prompt-wrap{margin-top:40px;display:flex;flex-direction:column;gap:24px;}
+.prompt-card{background:var(--text);border-radius:var(--r);overflow:hidden;}
+.prompt-header{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07);}
+.prompt-title{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.prompt-tag{font-size:11px;padding:3px 12px;border-radius:100px;font-weight:500;}
+.pt-indigo{background:var(--indigo-m);color:rgba(255,255,255,.7);}
+.prompt-body{padding:24px;font-family:'Outfit',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.75);}
+.prompt-body .hl{color:#a8b4ff;}
+.prompt-body .hl2{color:#ffd080;}
+.prompt-body .hl3{color:#80e8c0;}
+
+/* TOOLS COMPARE */
+.tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px;}
+.tool-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:24px 20px;text-align:center;transition:transform .3s,box-shadow .3s;}
+.tool-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.tool-icon{font-size:28px;margin-bottom:10px;}
+.tool-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.tool-role{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
+.tool-stars{display:flex;justify-content:center;gap:4px;margin-bottom:10px;}
+.star{width:8px;height:8px;border-radius:50%;background:var(--border);}
+.star.on{background:var(--indigo);}
+.tool-verdict{font-size:11px;padding:4px 12px;border-radius:100px;font-weight:500;}
+.verdict-best{background:var(--sage-l);color:var(--sage);}
+.verdict-good{background:var(--indigo-l);color:var(--indigo);}
+.verdict-ok{background:var(--amber-l);color:var(--amber);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* NAV BOTTOM */
+.nav-bottom{border-top:1px solid var(--border);padding:48px 64px;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto;}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1.5px solid var(--border);border-radius:100px;font-size:13px;color:var(--text2);text-decoration:none;transition:all .3s;}
+.nav-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+.nav-btn-primary{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+.nav-btn-primary:hover{background:#3546d4;color:#fff;}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:rgba(74,92,240,.3);border-radius:4px;}
+
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .hero,.section{padding-left:24px;padding-right:24px;}
+  .hero{padding-top:110px;}
+  .stat-bar{grid-template-columns:1fr 1fr;padding:32px 24px;gap:20px;}
+  .sb-item+.sb-item{border-left:none;}
+  .pipeline{flex-direction:column;}
+  .pipe-step{border-radius:var(--r)!important;}
+  .pipe-step::after{display:none;}
+  .cases-grid,.tools-grid{grid-template-columns:1fr;}
+  .nav-bottom{flex-direction:column;gap:16px;}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Nora D.</a>
+  <a href="index.html" class="nav-back">← 返回主页</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow"><div class="eyebrow-line"></div>AI Native · 产品工作流</div>
+  <h1>用 AI 重构<br><em>产品经理的工作方式</em></h1>
+  <p class="subtitle">不是用 AI 替代思考，而是用 AI 放大产品判断力——从需求分析、PRD 生成到网站开发、客户沟通，AI 工具深度融入日常交付的每一个环节。</p>
+</div>
+
+<!-- STAT BAR -->
+<div style="padding:0 64px;max-width:1228px;margin:0 auto;" class="reveal">
+  <div class="stat-bar">
+    <div class="sb-item">
+      <div class="sb-num">70%</div>
+      <div class="sb-label">PRD 初稿生成效率提升</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-num">4+</div>
+      <div class="sb-label">AI 工具横向测评对比</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-num">5</div>
+      <div class="sb-label">沉淀复用 Prompt 模板</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-num">3</div>
+      <div class="sb-label">独立交付的 AI 生成网站</div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 PIPELINE -->
+<div class="section reveal">
+  <div class="sec-label"><div class="sec-line"></div>01 · Workflow</div>
+  <h2 class="sec-title">端到端产品交付工作流</h2>
+  <p class="prose">从一句话需求描述到上线交付，AI 工具嵌入每一个阶段。不是单点使用，而是构建了一套<strong>可复用、可迭代</strong>的 AI 协作体系。</p>
+
+  <div class="pipeline">
+    <div class="pipe-step pipe-s1">
+      <div class="pipe-icon">📥</div>
+      <div class="pipe-tool">Input</div>
+      <div class="pipe-name">需求输入</div>
+      <div class="pipe-desc">客户需求、Figma 原型、历史需求文档</div>
+    </div>
+    <div class="pipe-step pipe-s2">
+      <div class="pipe-icon">🧠</div>
+      <div class="pipe-tool">Claude</div>
+      <div class="pipe-name">需求分析</div>
+      <div class="pipe-desc">结构化拆解、历史需求匹配、逻辑检查</div>
+    </div>
+    <div class="pipe-step pipe-s3">
+      <div class="pipe-icon">📝</div>
+      <div class="pipe-tool">Claude</div>
+      <div class="pipe-name">PRD 生成</div>
+      <div class="pipe-desc">用户故事、流程图、验收标准、异常场景</div>
+    </div>
+    <div class="pipe-step pipe-s4">
+      <div class="pipe-icon">🎨</div>
+      <div class="pipe-tool">Claude / Cursor</div>
+      <div class="pipe-name">方案设计</div>
+      <div class="pipe-desc">竞品分析、配置化方案、网页原型开发</div>
+    </div>
+    <div class="pipe-step pipe-s5">
+      <div class="pipe-icon">✉️</div>
+      <div class="pipe-tool">Claude</div>
+      <div class="pipe-name">客户沟通</div>
+      <div class="pipe-desc">英文邮件润色，使表达更 Native</div>
+    </div>
+    <div class="pipe-step pipe-s6">
+      <div class="pipe-icon">🚀</div>
+      <div class="pipe-tool">Output</div>
+      <div class="pipe-name">评审交付</div>
+      <div class="pipe-desc">需求评审 → 研发对接 → 上线验收</div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 USE CASES -->
+<div class="section reveal">
+  <div class="sec-label"><div class="sec-line"></div>02 · Use Cases</div>
+  <h2 class="sec-title">真实使用场景</h2>
+  <p class="prose">以下均为实际工作中沉淀的 AI 协作案例，不是想象中的工作流，是每天都在用的产出物。</p>
+
+  <div class="cases-grid">
+    <div class="case-card cc-indigo reveal">
+      <div class="case-tag tag-indigo">📄 PRD 生成</div>
+      <div class="case-title">分阶段 PRD 生成工作流</div>
+      <div class="case-desc">将客户需求描述 + Figma 原型链接 + 历史需求文档喂给 Claude，分七个阶段自动完成：需求分析 → 原型图解析 → 历史需求匹配 → 功能设计 → 规则匹配 → 文档生成 → 逻辑检查。每阶段暂停确认，避免黑盒输出。输出包含 Mermaid 流程图、用户故事、验收标准、异常场景。</div>
+      <div class="case-result">✅ 单份 PRD 生成时间从半天压缩至 1-2 小时</div>
+    </div>
+
+    <div class="case-card cc-violet reveal">
+      <div class="case-tag tag-violet">🔀 增量合并</div>
+      <div class="case-title">增量需求文档智能合并</div>
+      <div class="case-desc">客户迭代需求往往是在原有全量文档基础上的局部改动。通过专项 Prompt 让 Claude 分析增量文档涉及的目录，自动合并进全量文档——区分"老功能改造"/"老功能新增"/"全新功能"三种合并策略，合并后语言自然融入原文，不出现"新增/改动"等破坏文档连贯性的描述。</div>
+      <div class="case-result">✅ 全量文档维护效率提升，版本一致性显著改善</div>
+    </div>
+
+    <div class="case-card cc-rose reveal">
+      <div class="case-tag tag-rose">🌐 网站开发</div>
+      <div class="case-title">用 Claude 独立交付三个网站</div>
+      <div class="case-desc">Portfolio 个人网站、AddSecure 项目展示页、Local Player 媒体播放页，均由 Claude 完成从设计到代码的全链路输出。通过 PRD 描述 → Claude 生成 HTML/CSS/JS → 反复调试优化的协作模式，无需专业前端背景也能交付具有设计质感的产品。对比测试结论：Claude 在页面美观度和设计审美上优于 Cursor、Trae 等工具。</div>
+      <div class="case-result">✅ 零前端背景，独立交付 3 个完整网站</div>
+    </div>
+
+    <div class="case-card cc-amber reveal">
+      <div class="case-tag tag-amber">✉️ 客户沟通</div>
+      <div class="case-title">AI 润色英文客户邮件</div>
+      <div class="case-desc">与 AddSecure 欧洲团队的日常沟通以英文为主。在中文起草邮件核心意图后，使用 Claude 将其转化为更 Native 的英文表达——不只是翻译，而是语气、措辞、礼貌程度的全面校准，确保在跨文化商业沟通中给客户留下专业印象。也用于整理全日语资料（Clarion 日本客户）时的结构化提炼。</div>
+      <div class="case-result">✅ 跨文化沟通效率和客户体验双提升</div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 PROMPT -->
+<div class="section reveal">
+  <div class="sec-label"><div class="sec-line"></div>03 · Prompts</div>
+  <h2 class="sec-title">沉淀复用的 Prompt 模板</h2>
+  <p class="prose">好的 Prompt 是可以反复使用的资产。以下是工作中沉淀下来的核心提示词框架，每一个都经过多轮迭代验证。</p>
+
+  <div class="prompt-wrap">
+    <div class="prompt-card reveal">
+      <div class="prompt-header">
+        <span class="prompt-title">Prompt 01 · PRD 生成</span>
+        <span class="prompt-tag pt-indigo">Claude · 需求文档</span>
+      </div>
+      <div class="prompt-body">
+<span class="hl">你是一个高级产品经理助手</span>，请严格按照以下要求协助我完成需求文档的分阶段输出：<br><br>
+<span class="hl2">【目标】</span><br>
+1. 请先让我提供：<span class="hl3">需求描述 + Figma 原型图链接</span><br>
+2. 分阶段输出需求文档：<br>
+　　① 分析需求描述 → ② 分析原型图 → ③ 分析历史需求<br>
+　　→ ④ 结合分析结果 → ⑤ 匹配规则 → ⑥ 生成文档 → ⑦ 检查逻辑<br>
+3. 每个阶段完成后暂停，询问"是否需要修改/补充"<br>
+　　回复"继续"才进入下一阶段<br><br>
+<span class="hl2">【输出要求】</span><br>
+• 包含 Mermaid 流程图、用户故事、验收标准<br>
+• 覆盖异常场景和影响范围<br>
+• 格式：Markdown 文件
+      </div>
+    </div>
+
+    <div class="prompt-card reveal">
+      <div class="prompt-header">
+        <span class="prompt-title">Prompt 02 · 增量需求合并</span>
+        <span class="prompt-tag pt-indigo">Claude · 文档管理</span>
+      </div>
+      <div class="prompt-body">
+<span class="hl">你是一个高级产品经理助手</span>，把「增量需求文档」按规则分阶段合并进「全量需求文档」。<br><br>
+<span class="hl2">【三个阶段】</span><br>
+① <span class="hl3">分析增量文档</span>：确定涉及哪些目录，判断增量类型<br>
+　　（全新功能 / 老功能改造 / 老功能新增功能）<br>
+② <span class="hl3">合并增量文档</span>：先备份，再合并<br>
+　　合并后语言自然融入，不出现"新增/增加/改动"等描述<br>
+③ <span class="hl3">逻辑检查</span>：检查流程图，确认合并完成后再删备份<br><br>
+<span class="hl2">【核心规则】</span><br>
+• 禁止跳步、禁止无备份合并<br>
+• Figma 链接信息面与原文一致，不改写<br>
+• 用户确认"继续"才进入下一阶段
+      </div>
+    </div>
+
+    <div class="prompt-card reveal">
+      <div class="prompt-header">
+        <span class="prompt-title">Prompt 03 · 英文邮件润色</span>
+        <span class="prompt-tag pt-indigo">Claude · 客户沟通</span>
+      </div>
+      <div class="prompt-body">
+<span class="hl">你是一位资深的国际商务沟通专家</span>，帮我优化以下英文邮件：<br><br>
+<span class="hl2">【背景】</span><br>
+• 收件方：<span class="hl3">[客户名称]，[职位]，来自[国家/地区]</span><br>
+• 沟通目的：<span class="hl3">[确认需求 / 跟进进度 / 解释方案]</span><br>
+• 语气要求：专业、友好、简洁<br><br>
+<span class="hl2">【优化要求】</span><br>
+• 使表达更 Native，避免中式英语<br>
+• 保留核心意思，不过度简化技术细节<br>
+• 适当使用 please / would appreciate 等礼貌表达<br>
+• 结尾加清晰的 call to action<br><br>
+原始邮件：<span class="hl3">[粘贴邮件内容]</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 TOOLS -->
+<div class="section reveal">
+  <div class="sec-label"><div class="sec-line"></div>04 · Tools</div>
+  <h2 class="sec-title">AI 工具横向测评</h2>
+  <p class="prose">用同一个 Prompt 在不同 AI 工具上测试页面设计输出，得出了以下结论。选择工具不是追热点，而是找到真正适合产品经理工作场景的组合。</p>
+
+  <div class="tools-grid">
+    <div class="tool-card reveal">
+      <div class="tool-icon">🤖</div>
+      <div class="tool-name">Claude</div>
+      <div class="tool-role">需求文档 · 网页设计<br>客户沟通 · 竞品分析</div>
+      <div class="tool-stars">
+        <div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div>
+      </div>
+      <div class="tool-verdict verdict-best">🏆 设计审美最佳</div>
+    </div>
+    <div class="tool-card reveal">
+      <div class="tool-icon">⚡</div>
+      <div class="tool-name">Cursor</div>
+      <div class="tool-role">代码调试 · 需求文档<br>网页迭代修改</div>
+      <div class="tool-stars">
+        <div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star"></div>
+      </div>
+      <div class="tool-verdict verdict-good">💪 代码能力强</div>
+    </div>
+    <div class="tool-card reveal">
+      <div class="tool-icon">🎨</div>
+      <div class="tool-name">Stitch</div>
+      <div class="tool-role">网页 UI 设计<br>视觉稿生成</div>
+      <div class="tool-stars">
+        <div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star"></div>
+      </div>
+      <div class="tool-verdict verdict-good">🎨 设计感强</div>
+    </div>
+    <div class="tool-card reveal">
+      <div class="tool-icon">🚀</div>
+      <div class="tool-name">Trae</div>
+      <div class="tool-role">全流程部署<br>功能覆盖全面</div>
+      <div class="tool-stars">
+        <div class="star on"></div><div class="star on"></div><div class="star on"></div><div class="star"></div><div class="star"></div>
+      </div>
+      <div class="tool-verdict verdict-ok">🔧 功能强，审美待提升</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV BOTTOM -->
+<div class="nav-bottom">
+  <a href="index.html#work" class="nav-btn">← 返回项目列表</a>
+  <div style="display:flex;gap:12px;">
+    <a href="addsecure.html" class="nav-btn">查看 AddSecure Case Study →</a>
+    <a href="resume_nora.pdf" class="nav-btn nav-btn-primary" download>📄 下载简历</a>
+  </div>
+</div>
+
+<script>
+if (!('ontouchstart' in window)) {
+  const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-4}px,${my-4}px)`;});
+  (function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.transform=`translate(${rx-16}px,${ry-16}px)`;requestAnimationFrame(a);})();
+  document.querySelectorAll('a,button,.case-card,.tool-card,.pipe-step,.prompt-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(74,92,240,.5)';ring.style.background='rgba(74,92,240,.04)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(74,92,240,.4)';ring.style.background='transparent';});
+  });
+} else {
+  document.getElementById('cur').style.display='none';
+  document.getElementById('cur-r').style.display='none';
+}
+
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

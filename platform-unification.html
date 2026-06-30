@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Unification · Nora Dong</title>
+<meta name="description" content="多应用合并 Platform Unification Case Study — 统一配置中心、平台能力抽象、标准化治理，Nora Dong 产品经理作品集">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8f7f3;--bg2:#f0efe9;--white:#fff;--border:rgba(0,0,0,0.07);
+  --text:#1a1814;--text2:#4a4640;--muted:#9a9590;
+  --indigo:#4a5cf0;--indigo-l:#eef0fe;
+  --rose:#e8547a;--rose-l:#fef0f3;
+  --amber:#d4872a;--amber-l:#fef6ec;
+  --sage:#4a9b7a;--sage-l:#edf7f3;
+  --violet:#7c5cbf;--violet-l:#f3f0fb;
+  --shadow-m:0 8px 40px rgba(0,0,0,0.09);--r:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;}
+#cur{width:8px;height:8px;background:var(--indigo);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;}
+#cur-r{width:32px;height:32px;border:1.5px solid rgba(74,92,240,.4);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .2s,height .2s,border-color .2s,background .2s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:20px 64px;display:flex;justify-content:space-between;align-items:center;transition:all .4s;}
+nav.scrolled{background:rgba(248,247,243,0.94);backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--border);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--text);text-decoration:none;}
+.nav-back{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;}
+.nav-back:hover{color:var(--indigo);}
+.hero{padding:140px 64px 80px;max-width:1100px;margin:0 auto;}
+.eyebrow{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards;}
+.eyebrow-line{width:28px;height:2px;background:var(--indigo);border-radius:2px;}
+h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,62px);font-weight:500;line-height:1.05;margin-bottom:16px;opacity:0;animation:fadeUp .7s .2s forwards;}
+h1 em{font-style:italic;color:var(--indigo);}
+.subtitle{font-size:17px;color:var(--text2);line-height:1.7;max-width:620px;margin-bottom:48px;opacity:0;animation:fadeUp .7s .3s forwards;}
+.meta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:48px;opacity:0;animation:fadeUp .7s .4s forwards;}
+.meta-chip{padding:10px 20px;background:var(--white);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;gap:3px;}
+.meta-chip-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+.meta-chip-val{font-size:13px;font-weight:500;color:var(--text);}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;opacity:0;animation:fadeUp .7s .5s forwards;}
+.tag{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:500;}
+.outcome-wrap{padding:0 64px;max-width:1228px;margin:0 auto;}
+.outcome{background:var(--text);border-radius:24px;padding:44px 64px;margin-bottom:96px;display:grid;grid-template-columns:repeat(4,1fr);position:relative;overflow:hidden;}
+.outcome::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--violet),var(--indigo),var(--sage),var(--amber));}
+.ob{text-align:center;padding:0 16px;}
+.ob+.ob{border-left:1px solid rgba(255,255,255,.08);}
+.ob-n{font-family:'Playfair Display',serif;font-size:40px;font-weight:500;color:#fff;line-height:1;margin-bottom:6px;}
+.ob-l{font-size:12px;color:rgba(255,255,255,.45);}
+.body{max-width:1100px;margin:0 auto;padding:0 64px 120px;}
+.sec{margin-bottom:80px;}
+.sec-label{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:16px;}
+.sec-line{width:28px;height:2px;background:var(--indigo);border-radius:2px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);font-weight:500;margin-bottom:24px;line-height:1.2;}
+.prose{font-size:15px;line-height:1.9;color:var(--text2);max-width:720px;}
+.prose+.prose{margin-top:14px;}
+.prose strong{color:var(--text);font-weight:500;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px;}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:transform .3s,box-shadow .3s;}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.card li{font-size:13px;line-height:1.7;color:var(--text2);padding-left:16px;position:relative;}
+.card li::before{content:'→';position:absolute;left:0;color:var(--indigo);font-size:11px;top:2px;}
+/* BEFORE / AFTER */
+.ba-wrap{display:grid;grid-template-columns:1fr 48px 1fr;gap:0;margin-top:32px;align-items:start;}
+.ba-col{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px;}
+.ba-before{border-color:var(--rose-l);background:var(--rose-l);}
+.ba-after{border-color:var(--sage-l);background:var(--sage-l);}
+.ba-label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;margin-bottom:14px;}
+.ba-before .ba-label{color:var(--rose);}
+.ba-after .ba-label{color:var(--sage);}
+.ba-arrow{display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--indigo);padding-top:40px;}
+.ba-item{font-size:13px;line-height:1.8;color:var(--text2);padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.05);}
+.ba-item:last-child{border-bottom:none;}
+/* ARCH */
+.arch-layers{display:flex;flex-direction:column;gap:12px;margin-top:32px;}
+.arch-layer{border-radius:var(--r);padding:24px 28px;display:grid;grid-template-columns:180px 1fr;gap:24px;align-items:center;transition:transform .3s,box-shadow .3s;}
+.arch-layer:hover{transform:translateX(4px);}
+.al-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.al-desc{font-size:13px;line-height:1.8;color:var(--text2);}
+.al-gs{background:var(--violet-l);} .al-gs .al-label{color:var(--violet);}
+.al-biz{background:var(--indigo-l);} .al-biz .al-label{color:var(--indigo);}
+.al-perm{background:var(--amber-l);} .al-perm .al-label{color:var(--amber);}
+.al-data{background:var(--sage-l);} .al-data .al-label{color:var(--sage);}
+/* DECISIONS */
+.decisions{display:flex;flex-direction:column;gap:20px;margin-top:32px;}
+.decision{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px 32px;display:grid;grid-template-columns:56px 1fr;gap:20px;align-items:start;transition:transform .3s,box-shadow .3s;}
+.decision:hover{transform:translateY(-3px);box-shadow:var(--shadow-m);}
+.d-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:500;color:rgba(74,92,240,.12);line-height:1;}
+.d-q{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:.08em;text-transform:uppercase;}
+.d-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:10px;}
+.d-desc{font-size:13px;line-height:1.85;color:var(--text2);}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.pill{padding:4px 12px;background:var(--indigo-l);color:var(--indigo);border-radius:100px;font-size:11px;font-weight:500;}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;}
+.res-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:transform .3s,box-shadow .3s;}
+.res-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.res-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:500;line-height:1;margin-bottom:6px;}
+.res-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.res-desc{font-size:13px;line-height:1.7;color:var(--muted);}
+.rc-i .res-num{color:var(--indigo);}
+.rc-s .res-num{color:var(--sage);}
+.rc-v .res-num{color:var(--violet);}
+.rc-a .res-num{color:var(--amber);}
+.quote{margin:40px 0;padding:32px 36px;background:var(--indigo-l);border-left:3px solid var(--indigo);border-radius:0 14px 14px 0;}
+.quote p{font-family:'Playfair Display',serif;font-size:17px;font-style:italic;line-height:1.7;color:var(--text);margin-bottom:10px;}
+.quote cite{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.nav-bottom{border-top:1px solid var(--border);padding:48px 64px;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto;}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1.5px solid var(--border);border-radius:100px;font-size:13px;color:var(--text2);text-decoration:none;transition:all .3s;}
+.nav-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+.nav-btn-p{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+.nav-btn-p:hover{background:#3546d4;color:#fff;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:rgba(74,92,240,.3);border-radius:4px;}
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .hero,.body,.outcome-wrap,.nav-bottom{padding-left:24px;padding-right:24px;}
+  .hero{padding-top:110px;}
+  .outcome{grid-template-columns:1fr 1fr;padding:32px 24px;}
+  .ob+.ob{border-left:none;}
+  .two-col,.three-col,.result-grid,.ba-wrap{grid-template-columns:1fr;}
+  .ba-arrow{transform:rotate(90deg);padding:0;}
+  .arch-layer{grid-template-columns:1fr;}
+  .decision{grid-template-columns:1fr;}
+  .d-num{font-size:28px;}
+  .nav-bottom{flex-direction:column;gap:16px;}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Nora D.</a>
+  <a href="index.html#work" class="nav-back">← 返回项目列表</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow"><div class="eyebrow-line"></div>Case Study · 平台架构产品设计</div>
+  <h1>Platform Unification —<br><em>多应用合并</em><br>统一平台底座</h1>
+  <p class="subtitle">将 FT / PT / SBS 多个独立业务系统合并为统一平台，抽离通用能力建立配置中心，降低跨业务配置冲突与系统维护复杂度，成功转化终端用户 2 万+。</p>
+  <div class="meta-row">
+    <div class="meta-chip"><span class="meta-chip-label">项目类型</span><span class="meta-chip-val">平台架构重构</span></div>
+    <div class="meta-chip"><span class="meta-chip-label">涉及系统</span><span class="meta-chip-val">FT / PT / SBS / BasePlatform</span></div>
+    <div class="meta-chip"><span class="meta-chip-label">我的角色</span><span class="meta-chip-val">产品经理 · 需求主导</span></div>
+    <div class="meta-chip"><span class="meta-chip-label">转化规模</span><span class="meta-chip-val">终端用户 2 万+</span></div>
+  </div>
+  <div class="tag-row">
+    <span class="tag" style="background:var(--violet-l);color:var(--violet);">平台能力抽象</span>
+    <span class="tag" style="background:var(--indigo-l);color:var(--indigo);">统一配置中心</span>
+    <span class="tag" style="background:var(--sage-l);color:var(--sage);">标准化治理</span>
+    <span class="tag" style="background:var(--amber-l);color:var(--amber);">权限体系重构</span>
+    <span class="tag" style="background:var(--bg2);color:var(--text2);">多租户 SaaS</span>
+  </div>
+</div>
+
+<div class="outcome-wrap reveal">
+  <div class="outcome">
+    <div class="ob"><div class="ob-n">2万+</div><div class="ob-l">终端用户成功转化</div></div>
+    <div class="ob"><div class="ob-n">1套</div><div class="ob-l">统一权限体系</div></div>
+    <div class="ob"><div class="ob-n">General<br><span style="font-size:20px;">Setting</span></div><div class="ob-l">通用配置中心统一收口</div></div>
+    <div class="ob"><div class="ob-n">消除</div><div class="ob-l">跨业务配置冲突与重复</div></div>
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>01 · Background</div>
+    <h2 class="sec-title">为什么需要统一平台</h2>
+    <p class="prose">FT Cloud 平台最初按业务线分别独立开发：FT（货运追踪）、PT（客运追踪）、SBS（校车管理）各有一套独立的前端入口、权限体系、通用设置模块。这种"烟囱式"架构在早期快速交付上有优势，但随着业务规模扩大，代价也愈发显著。</p>
+    <div class="two-col">
+      <div class="card reveal">
+        <div class="card-title">🔴 多应用并存的痛点</div>
+        <ul>
+          <li>用户需要在多个独立系统间切换，体验割裂</li>
+          <li>权限体系各自独立，同一角色需要多次配置</li>
+          <li>"通用设置"在每个应用中重复存在，配置容易冲突</li>
+          <li>租户中心、用户管理分散在各业务层，维护成本高</li>
+          <li>新业务接入门槛高，无法复用已有平台能力</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-title">🎯 合并的战略目标</div>
+        <ul>
+          <li>统一入口：多应用用户登录后进入统一界面</li>
+          <li>通用能力上移：系统级配置集中至 General Setting</li>
+          <li>一套权限体系覆盖所有应用</li>
+          <li>业务层仅保留业务专属配置，不涉及跨系统影响</li>
+          <li>为后续多业务规模化扩展提供标准化底座</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>02 · Before vs. After</div>
+    <h2 class="sec-title">合并前后对比</h2>
+    <div class="ba-wrap">
+      <div class="ba-col ba-before reveal">
+        <div class="ba-label">合并前 · 烟囱式架构</div>
+        <div class="ba-item">FT / PT / SBS 各自独立入口</div>
+        <div class="ba-item">每个应用有独立的"通用设置"</div>
+        <div class="ba-item">用户权限需在各应用分别配置</div>
+        <div class="ba-item">租户中心分散在业务层</div>
+        <div class="ba-item">运维/人因系统静态绑定</div>
+        <div class="ba-item">新增应用需重建权限与设置体系</div>
+      </div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-col ba-after reveal">
+        <div class="ba-label">合并后 · 统一平台底座</div>
+        <div class="ba-item">顶部应用选择器，统一入口动态切换</div>
+        <div class="ba-item">General Setting 统一收口系统级配置</div>
+        <div class="ba-item">一套权限体系，支持多应用授权</div>
+        <div class="ba-item">租户中心 (Subscription) 集中管理</div>
+        <div class="ba-item">运维/人因随应用切换动态跟随</div>
+        <div class="ba-item">新应用接入即可继承平台能力</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>03 · Architecture</div>
+    <h2 class="sec-title">平台能力分层架构</h2>
+    <p class="prose">合并的核心是将能力分层——哪些是<strong>平台级通用能力</strong>（所有应用共享），哪些是<strong>业务级专属能力</strong>（各应用独立维护）。这个分层决策贯穿整个架构设计。</p>
+    <div class="arch-layers">
+      <div class="arch-layer al-gs reveal">
+        <div class="al-label">🌐 General Setting<br>通用配置层</div>
+        <div class="al-desc">继承 BasePlatform 功能并重命名。包含影响整个系统的配置：用户配置（时区/地区/时间格式）、登录设置、语言设置、登录日志、<strong>权限中心（User & Role）</strong>、<strong>租户中心（Subscription）</strong>。所有系统级设置从业务层抽离，集中至此，不再重复出现在各业务模块中。</div>
+      </div>
+      <div class="arch-layer al-biz reveal">
+        <div class="al-label">📦 业务层 Setting<br>应用专属配置</div>
+        <div class="al-desc">各应用（FT / PT / SBS）的 Setting 菜单仅保留与本业务相关的配置：报警规则、报警类型、报警提示音、车辆类型管理等。每个应用独立维护，互不影响。原"通用设置（General Setting）"更名为"设置（Setting）"，删除已上移至平台层的 User & Role 和 Subscription。</div>
+      </div>
+      <div class="arch-layer al-perm reveal">
+        <div class="al-label">🔑 权限中心<br>统一权限体系</div>
+        <div class="al-desc">沿用 BasePlatform 权限中心，英文命名改为 User & Role。新增角色时支持<strong>多选归属应用</strong>（原仅支持单应用），选择授权服务时根据所选应用展示对应结构，支持同时为一个角色授权多个应用的功能。数据权限基于功能权限限制，各应用的数据权限（车组/车辆/司机）统一在此配置。</div>
+      </div>
+      <div class="arch-layer al-data reveal">
+        <div class="al-label">🏢 租户中心<br>Subscription 管理</div>
+        <div class="al-desc">继承 BP 租户中心，英文命名改为 Subscription。二级菜单调整：租户详情（My Subscription）、子租户管理（Sub-Subscription）、结算账单、租户模板，以及新增<strong>空间管理（Storage）</strong>。租户详情 License 管理新增应用 Tab，支持查看其他业务层的 License；空间管理同理支持多应用 Tab。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>04 · Design Decisions</div>
+    <h2 class="sec-title">关键产品决策</h2>
+    <div class="decisions">
+      <div class="decision reveal">
+        <div class="d-num">01</div>
+        <div>
+          <div class="d-q">导航设计决策</div>
+          <div class="d-title">九宫格 → 顶部应用选择器</div>
+          <div class="d-desc">原有的"九宫格"入口是多系统并列的离散入口，用户进入某个应用后无法方便地切换到其他应用。改为<strong>顶部应用选择器</strong>：左上角展示用户所有权限应用，选择应用后顶部展示该应用下所有服务入口（FT Vision、FT Manager、Maintenance、AI Safety Copilot、Video Hub），左侧菜单同步切换。这一改动将"切换应用"从离开当前页面变为在同一框架内无缝切换，体验连贯性大幅提升。</div>
+          <div class="pills"><span class="pill">应用选择器</span><span class="pill">菜单动态跟随</span><span class="pill">无缝切换体验</span></div>
+        </div>
+      </div>
+      <div class="decision reveal">
+        <div class="d-num">02</div>
+        <div>
+          <div class="d-q">权限设计决策</div>
+          <div class="d-title">单应用角色 → 多应用角色授权</div>
+          <div class="d-desc">原有权限体系每个角色只能绑定一个应用，跨应用操作的用户需要配置多个角色，管理成本高且容易出错。重构后支持<strong>新增角色时多选归属应用</strong>，同时为一个角色授权多个应用的功能。选择授权服务时，根据所选应用展示对应结构，权限继承原有应用子系统结构，在上级加上应用维度层级。这是真正意义上的"统一权限体系"而非多套权限的叠加。</div>
+          <div class="pills"><span class="pill">多应用角色授权</span><span class="pill">应用维度层级</span><span class="pill">统一权限中心</span></div>
+        </div>
+      </div>
+      <div class="decision reveal">
+        <div class="d-num">03</div>
+        <div>
+          <div class="d-q">配置治理决策</div>
+          <div class="d-title">General Setting 入口设计：图标而非菜单</div>
+          <div class="d-desc">通用设置作为跨应用的平台级能力，放在左侧业务菜单栏里不合适（业务菜单应跟随应用切换），放在顶部也需要控制入口权重。最终设计为<strong>以 icon 形式放在顶部右侧</strong>（用户名和语言切换之间），hover 时气泡提示"General Setting"，点击后 icon 变为当前主题色。这个设计让通用设置始终可达，同时不干扰主要的业务操作流。</div>
+          <div class="pills"><span class="pill">常驻顶部 icon</span><span class="pill">主题色激活态</span><span class="pill">不占业务菜单位</span></div>
+        </div>
+      </div>
+      <div class="decision reveal">
+        <div class="d-num">04</div>
+        <div>
+          <div class="d-q">运维系统决策</div>
+          <div class="d-title">运维与人因系统随应用动态切换</div>
+          <div class="d-desc">运维（Maintenance）和人因（AI Safety Copilot）系统原来静态绑定在固定位置，多业务合并后需要明确其归属逻辑。设计决策为<strong>跟随业务系统切换</strong>：每个业务系统（应用）有独立的运维和人因，切换应用后运维和人因系统同步切换至对应应用的版本。这一设计保证了各应用的运维数据独立性，避免跨应用数据混淆。</div>
+          <div class="pills"><span class="pill">动态跟随切换</span><span class="pill">应用独立隔离</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote reveal">
+    <p>平台合并最大的陷阱是"形式上合并"——把多个入口放到一个页面里，但底层配置、权限、数据仍然各自独立。真正的统一，是从架构层建立一套通用底座。</p>
+    <cite>— 多应用合并项目核心判断</cite>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>05 · Result</div>
+    <h2 class="sec-title">项目成果</h2>
+    <div class="result-grid">
+      <div class="res-card rc-i reveal">
+        <div class="res-num">2万+</div>
+        <div class="res-title">终端用户成功转化</div>
+        <div class="res-desc">多应用统一平台底座建立后，成功将 FT / PT / SBS 多业务的终端用户迁移至统一平台，转化规模达 2 万+。</div>
+      </div>
+      <div class="res-card rc-s reveal">
+        <div class="res-num">1套</div>
+        <div class="res-title">统一权限体系全覆盖</div>
+        <div class="res-desc">从多套分散权限体系合并为一套统一的 User & Role 权限中心，支持多应用角色授权，管理成本大幅降低。</div>
+      </div>
+      <div class="res-card rc-v reveal">
+        <div class="res-num">消除</div>
+        <div class="res-title">跨业务配置冲突</div>
+        <div class="res-desc">系统级设置从各业务层抽离集中至 General Setting，彻底消除"同一配置在多个应用中重复存在且互相冲突"的问题。</div>
+      </div>
+      <div class="res-card rc-a reveal">
+        <div class="res-num">标准化</div>
+        <div class="res-title">多应用扩展底座</div>
+        <div class="res-desc">统一平台底座建立后，新业务接入可直接继承权限、配置、租户等通用能力，为规模化扩展提供标准化基础。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav-bottom">
+  <a href="index.html#work" class="nav-btn">← 返回项目列表</a>
+  <div style="display:flex;gap:12px;">
+    <a href="resume_nora.pdf" class="nav-btn" download>📄 下载简历</a>
+    <a href="index.html#contact" class="nav-btn nav-btn-p">联系我讨论更多 →</a>
+  </div>
+</div>
+
+<script>
+if (!('ontouchstart' in window)) {
+  const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-4}px,${my-4}px)`;});
+  (function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.transform=`translate(${rx-16}px,${ry-16}px)`;requestAnimationFrame(a);})();
+  document.querySelectorAll('a,button,.card,.res-card,.decision,.arch-layer').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(74,92,240,.5)';ring.style.background='rgba(74,92,240,.04)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(74,92,240,.4)';ring.style.background='transparent';});
+  });
+} else {
+  document.getElementById('cur').style.display='none';
+  document.getElementById('cur-r').style.display='none';
+}
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

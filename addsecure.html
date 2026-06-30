@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AddSecure Case Study · Nora Dong</title>
+<meta name="description" content="AddSecure 欧洲大客户项目 Case Study — 配置看板、安全评分体系、1万+车辆迁移平台，Nora Dong 产品经理作品集">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8f7f3;--bg2:#f0efe9;--white:#ffffff;--border:rgba(0,0,0,0.07);
+  --text:#1a1814;--text2:#4a4640;--muted:#9a9590;
+  --indigo:#4a5cf0;--indigo-l:#eef0fe;--indigo-m:rgba(74,92,240,0.15);
+  --rose:#e8547a;--rose-l:#fef0f3;
+  --amber:#d4872a;--amber-l:#fef6ec;
+  --sage:#4a9b7a;--sage-l:#edf7f3;
+  --shadow-s:0 2px 16px rgba(0,0,0,0.06);
+  --shadow-m:0 8px 40px rgba(0,0,0,0.09);
+  --shadow-l:0 24px 80px rgba(0,0,0,0.11);
+  --r:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;}
+
+/* CURSOR */
+#cur{width:8px;height:8px;background:var(--indigo);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:transform .08s;}
+#cur-r{width:32px;height:32px;border:1.5px solid rgba(74,92,240,.4);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .2s,height .2s,border-color .2s,background .2s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:20px 64px;display:flex;justify-content:space-between;align-items:center;transition:all .4s;}
+nav.scrolled{background:rgba(248,247,243,0.94);backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--border);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--text);text-decoration:none;letter-spacing:.04em;}
+.nav-back{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;}
+.nav-back:hover{color:var(--indigo);}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
+.nav-burger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;}
+
+/* HERO */
+.cs-hero{padding:140px 64px 80px;max-width:1100px;margin:0 auto;position:relative;}
+.cs-eyebrow{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards;}
+.cs-eyebrow-line{width:28px;height:2px;background:var(--indigo);border-radius:2px;}
+.cs-title{font-family:'Playfair Display',serif;font-size:clamp(38px,5vw,68px);font-weight:500;line-height:1.05;margin-bottom:16px;opacity:0;animation:fadeUp .7s .2s forwards;}
+.cs-title em{font-style:italic;color:var(--indigo);}
+.cs-subtitle{font-size:17px;color:var(--text2);line-height:1.7;max-width:640px;margin-bottom:48px;opacity:0;animation:fadeUp .7s .3s forwards;}
+
+.cs-meta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:64px;opacity:0;animation:fadeUp .7s .4s forwards;}
+.cs-meta-item{display:flex;flex-direction:column;gap:4px;padding:16px 24px;background:var(--white);border:1px solid var(--border);border-radius:14px;}
+.cs-meta-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+.cs-meta-val{font-size:13px;font-weight:500;color:var(--text);}
+
+.cs-tags{display:flex;flex-wrap:wrap;gap:8px;opacity:0;animation:fadeUp .7s .5s forwards;}
+.cs-tag{padding:6px 16px;border-radius:100px;font-size:12px;font-weight:500;}
+
+/* OUTCOME BAR */
+.outcome-bar{background:var(--text);border-radius:24px;padding:48px 64px;margin:0 0 96px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;position:relative;overflow:hidden;}
+.outcome-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--indigo),var(--rose),var(--amber),var(--sage));}
+.ob-item{text-align:center;padding:0 24px;}
+.ob-item+.ob-item{border-left:1px solid rgba(255,255,255,.08);}
+.ob-num{font-family:'Playfair Display',serif;font-size:42px;font-weight:500;color:#fff;line-height:1;margin-bottom:6px;}
+.ob-label{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.06em;}
+
+/* CONTENT LAYOUT */
+.cs-body{max-width:1100px;margin:0 auto;padding:0 64px 120px;}
+.cs-section{margin-bottom:80px;}
+.cs-section-label{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:16px;}
+.cs-section-line{width:28px;height:2px;background:var(--indigo);border-radius:2px;}
+.cs-section-title{font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,36px);font-weight:500;margin-bottom:28px;line-height:1.2;}
+.cs-prose{font-size:15px;line-height:1.9;color:var(--text2);max-width:720px;}
+.cs-prose+.cs-prose{margin-top:16px;}
+.cs-prose strong{color:var(--text);font-weight:500;}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:32px;}
+.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:32px 28px;}
+.info-card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.info-card ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.info-card li{font-size:13px;line-height:1.7;color:var(--text2);padding-left:16px;position:relative;}
+.info-card li::before{content:'→';position:absolute;left:0;color:var(--indigo);font-size:11px;top:2px;}
+
+/* CHALLENGE CARDS */
+.challenge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;}
+.ch-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px 24px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.ch-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.ch-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.ch-c1::before{background:var(--indigo);}.ch-c2::before{background:var(--rose);}.ch-c3::before{background:var(--amber);}
+.ch-icon{font-size:24px;margin-bottom:12px;}
+.ch-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.ch-desc{font-size:13px;line-height:1.8;color:var(--muted);}
+
+/* COMPETITOR TABLE */
+.comp-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:32px;}
+.comp-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px 32px;display:grid;grid-template-columns:160px 1fr 1fr 1fr;gap:24px;align-items:start;transition:box-shadow .3s;}
+.comp-card:hover{box-shadow:var(--shadow-m);}
+.comp-card.highlight{border-color:var(--indigo);background:var(--indigo-l);}
+.comp-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:500;display:flex;align-items:center;gap:8px;}
+.comp-badge{font-size:10px;padding:3px 10px;border-radius:100px;background:var(--indigo);color:#fff;font-family:'Outfit',sans-serif;font-weight:500;vertical-align:middle;}
+.comp-col-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500;}
+.comp-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.comp-list li{font-size:12px;line-height:1.6;color:var(--text2);padding-left:14px;position:relative;}
+.comp-list li::before{content:'•';position:absolute;left:0;color:var(--indigo);}
+.comp-list.cons li::before{color:var(--rose);}
+
+/* SOLUTION STEPS */
+.solution-steps{display:flex;flex-direction:column;gap:24px;margin-top:32px;}
+.step{display:grid;grid-template-columns:64px 1fr;gap:24px;align-items:start;}
+.step-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:500;color:rgba(74,92,240,.12);line-height:1;}
+.step-content{padding-top:8px;}
+.step-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.step-desc{font-size:14px;line-height:1.85;color:var(--text2);}
+.step-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.step-pill{padding:4px 14px;background:var(--indigo-l);border-radius:100px;font-size:12px;color:var(--indigo);}
+
+/* RESULT */
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px;}
+.result-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:32px 28px;transition:transform .3s,box-shadow .3s;}
+.result-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.result-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:500;line-height:1;margin-bottom:6px;}
+.result-label{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.result-desc{font-size:13px;line-height:1.7;color:var(--muted);}
+.rc-indigo .result-num{color:var(--indigo);}
+.rc-sage .result-num{color:var(--sage);}
+.rc-rose .result-num{color:var(--rose);}
+.rc-amber .result-num{color:var(--amber);}
+
+/* ROLE */
+.role-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:40px;margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+.role-col-title{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;font-weight:500;}
+.role-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.role-list li{font-size:14px;line-height:1.7;color:var(--text2);padding-left:20px;position:relative;}
+.role-list li::before{content:'';position:absolute;left:0;top:9px;width:8px;height:2px;background:var(--indigo);border-radius:2px;}
+
+/* QUOTE */
+.cs-quote{margin:48px 0;padding:36px 40px;background:var(--indigo-l);border-left:3px solid var(--indigo);border-radius:0 16px 16px 0;position:relative;}
+.cs-quote p{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;line-height:1.7;color:var(--text);margin-bottom:12px;}
+.cs-quote cite{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+
+/* NAV BOTTOM */
+.cs-nav-bottom{border-top:1px solid var(--border);padding:48px 64px;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto;}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1.5px solid var(--border);border-radius:100px;font-size:13px;color:var(--text2);text-decoration:none;transition:all .3s;}
+.nav-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+.nav-btn-primary{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+.nav-btn-primary:hover{background:#3546d4;color:#fff;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(74,92,240,.3);border-radius:4px;}
+
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .cs-hero,.cs-body{padding-left:24px;padding-right:24px;}
+  .cs-hero{padding-top:110px;}
+  .outcome-bar{grid-template-columns:1fr 1fr;padding:40px 32px;gap:24px;}
+  .ob-item+.ob-item{border-left:none;}
+  .two-col,.role-wrap,.result-grid{grid-template-columns:1fr;}
+  .challenge-grid{grid-template-columns:1fr;}
+  .comp-card{grid-template-columns:1fr 1fr;gap:16px;}
+  .comp-name{grid-column:1/-1;}
+  .cs-nav-bottom{flex-direction:column;gap:16px;text-align:center;}
+  .nav-burger{display:flex;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Nora D.</a>
+  <a href="index.html#work" class="nav-back">← 返回项目列表</a>
+</nav>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <div class="cs-eyebrow"><div class="cs-eyebrow-line"></div>Case Study · 欧洲大客户项目</div>
+  <h1 class="cs-title">AddSecure —<br><em>国际客户深度定制化</em><br>与平台迁移</h1>
+  <p class="cs-subtitle">Frost & Sullivan 2024 欧洲车队管理市场领导力大奖得主，欧洲战区最大客户。从需求对接到功能交付，覆盖配置看板、安全评分体系、1万+台车辆跨平台迁移，历经三个版本持续演进。</p>
+
+  <div class="cs-meta">
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">我的角色</span>
+      <span class="cs-meta-val">独立产品经理</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">介入时间</span>
+      <span class="cs-meta-val">2025.10 — 至今</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">完全接手</span>
+      <span class="cs-meta-val">2025.12</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">版本迭代</span>
+      <span class="cs-meta-val">3 个版本</span>
+    </div>
+    <div class="cs-meta-item">
+      <span class="cs-meta-label">项目状态</span>
+      <span class="cs-meta-val" style="color:var(--sage);">● 持续进行中</span>
+    </div>
+  </div>
+
+  <div class="cs-tags">
+    <span class="cs-tag" style="background:var(--indigo-l);color:var(--indigo);">国际化 SaaS</span>
+    <span class="cs-tag" style="background:var(--rose-l);color:var(--rose);">Fleet Management</span>
+    <span class="cs-tag" style="background:var(--amber-l);color:var(--amber);">配置化平台</span>
+    <span class="cs-tag" style="background:var(--sage-l);color:var(--sage);">跨平台迁移</span>
+    <span class="cs-tag" style="background:var(--bg2);color:var(--text2);">欧洲市场</span>
+  </div>
+</div>
+
+<!-- OUTCOME BAR -->
+<div style="padding:0 64px;max-width:1228px;margin:0 auto 0;" class="reveal">
+  <div class="outcome-bar">
+    <div class="ob-item">
+      <div class="ob-num">10,000<span style="font-size:22px;">+</span></div>
+      <div class="ob-label">P100 设备迁移车辆</div>
+    </div>
+    <div class="ob-item">
+      <div class="ob-num">3</div>
+      <div class="ob-label">版本持续迭代</div>
+    </div>
+    <div class="ob-item">
+      <div class="ob-num">6</div>
+      <div class="ob-label">核心功能模块交付</div>
+    </div>
+    <div class="ob-item">
+      <div class="ob-num" style="font-size:28px;padding-top:8px;">续订合约</div>
+      <div class="ob-label">客户主动续约 · 反馈积极</div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="cs-body">
+
+  <!-- 01 BACKGROUND -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label"><div class="cs-section-line"></div>01 · Background</div>
+    <h2 class="cs-section-title">客户背景</h2>
+
+    <!-- Company intro card -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:32px 36px;margin-bottom:32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;" class="reveal">
+      <div>
+        <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">公司定位</div>
+        <div style="font-size:14px;line-height:1.8;color:var(--text2);">欧洲领先的车队管理 & IoT 解决方案提供商，总部位于瑞典斯德哥尔摩，业务覆盖 15 个国家</div>
+      </div>
+      <div>
+        <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">行业地位</div>
+        <div style="font-size:14px;line-height:1.8;color:var(--text2);"><strong style="color:var(--indigo);">Frost & Sullivan 2024 欧洲市场领导力大奖</strong>得主，被评为欧洲车队管理服务领域无可争议的领导者之一</div>
+      </div>
+      <div>
+        <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">规模与覆盖</div>
+        <div style="font-size:14px;line-height:1.8;color:var(--text2);">880+ 员工，14+ 办公地点，通过连续并购（Vehco、Connexas、Navkonzept 等）构建欧洲全覆盖网络</div>
+      </div>
+    </div>
+
+    <!-- Industry tags -->
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;" class="reveal">
+      <span style="padding:5px 14px;background:var(--indigo-l);color:var(--indigo);border-radius:100px;font-size:12px;font-weight:500;">Fleet Management SaaS</span>
+      <span style="padding:5px 14px;background:var(--indigo-l);color:var(--indigo);border-radius:100px;font-size:12px;font-weight:500;">Video Telematics</span>
+      <span style="padding:5px 14px;background:var(--indigo-l);color:var(--indigo);border-radius:100px;font-size:12px;font-weight:500;">Transport Management</span>
+      <span style="padding:5px 14px;background:var(--indigo-l);color:var(--indigo);border-radius:100px;font-size:12px;font-weight:500;">IoT Connectivity</span>
+      <span style="padding:5px 14px;background:var(--indigo-l);color:var(--indigo);border-radius:100px;font-size:12px;font-weight:500;">AI-Powered Analytics</span>
+    </div>
+
+    <p class="cs-prose">AddSecure 是 Streamax（锐明技术）<strong>欧洲战区体量最大的客户</strong>，也是欧洲车队管理行业的头部玩家。其产品线涵盖车队管理、货运追踪、视频远程信息处理，通过 FMS Lite / FMS Plus / FMS Pro 分级 SaaS 套件服务不同规模的企业客户。与此同时，AddSecure 将 Streamax 的平台能力<strong>作为 SaaS 产品转售给第三方终端用户</strong>，这一 To B To B 模式决定了他们对平台的要求远超普通客户——既需要极高的<strong>个性化配置能力</strong>，又要保证面向终端用户转售时的<strong>品牌一致性与功能稳定性</strong>。</p>
+    <p class="cs-prose" style="margin-top:16px;">与此同时，AddSecure 旗下有 1 万+ 台在用车辆搭载 P100 设备，彼时全部运行在竞品平台 <strong>Verilocation</strong> 上。将这批设备迁移至 Streamax FT Cloud，不仅是本项目最具战略价值的一条线，更是双方合作深化的关键里程碑。</p>
+
+    <div class="two-col" style="margin-top:32px;">
+      <div class="info-card">
+        <div class="info-card-title">🌍 客户画像</div>
+        <ul>
+          <li>Frost & Sullivan 2024 欧洲车队管理市场领导力大奖得主</li>
+          <li>欧洲战区 Streamax 最大单一客户</li>
+          <li>自用 + 转售给第三方终端用户（To B To B）</li>
+          <li>车队管理 & 货运追踪 & 视频远程信息处理</li>
+          <li>1万+ 台 P100 设备跨平台迁移需求</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">📌 我的介入节点</div>
+        <ul>
+          <li>2025.10 开始参与项目对接</li>
+          <li>2025.12 完全接手，成为唯一对接 PM</li>
+          <li>打破"技术支持作为中间层"的原有模式</li>
+          <li>直接与 AddSecure 团队通过 Teams / 会议沟通</li>
+          <li>同步推进功能需求 + P100 迁移两条线</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 CHALLENGE -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label"><div class="cs-section-line"></div>02 · Challenge</div>
+    <h2 class="cs-section-title">业务挑战</h2>
+    <p class="cs-prose">客户需求多元且复杂，部分需求对平台架构影响较大；与此同时，原有沟通链路存在效率瓶颈，需求在传递过程中损耗严重。</p>
+
+    <div class="challenge-grid">
+      <div class="ch-card ch-c1">
+        <div class="ch-icon">🏗️</div>
+        <div class="ch-title">需求对平台改造影响大</div>
+        <div class="ch-desc">安全评分机制、配置看板等功能并非简单的 UI 改动，而是涉及底层评分逻辑重构和权限体系改造，对研发侧挑战极高。</div>
+      </div>
+      <div class="ch-card ch-c2">
+        <div class="ch-icon">🔗</div>
+        <div class="ch-title">沟通链路过长，时效性差</div>
+        <div class="ch-desc">早期通过技术支持作为需求中间层传递，信息在多次转手中失真，导致需求理解偏差和响应延迟，客户满意度受影响。</div>
+      </div>
+      <div class="ch-card ch-c3">
+        <div class="ch-icon">🚛</div>
+        <div class="ch-title">万台设备迁移，零容错</div>
+        <div class="ch-desc">P100 设备迁移项目涉及 1万+ 台在用车辆，从 Verilocation 平台迁至 FT Cloud，任何数据丢失或服务中断都将直接影响客户业务连续性。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 RESEARCH -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label"><div class="cs-section-line"></div>03 · Research</div>
+    <h2 class="cs-section-title">竞品分析</h2>
+    <p class="cs-prose">为了理解 AddSecure 对平台的期望上限，以及 FT Cloud 在全球 Fleet SaaS 市场中的定位，我系统梳理了四个主要竞品，从核心功能、差异化优势和薄弱点三个维度进行对比分析。</p>
+    <p class="cs-prose" style="margin-top:12px;">核心结论：FT Cloud 在 <strong>AI 安全中心（SafeGPT）</strong>和<strong>高度定制化</strong>上具备差异化优势，但在在线反馈机制上存在短板，需在客户定制方案中优先弥补。</p>
+
+    <div class="comp-grid">
+      <!-- FT Cloud -->
+      <div class="comp-card highlight reveal">
+        <div class="comp-name">FT Cloud <span class="comp-badge">我方产品</span></div>
+        <div>
+          <div class="comp-col-label">核心功能</div>
+          <ul class="comp-list">
+            <li>SafeGPT 多模态安全中心</li>
+            <li>高度定制化 · 支持客户品牌推广</li>
+            <li>远程设备在线管理</li>
+            <li>运营成本管控（流量/存储/视频）</li>
+          </ul>
+        </div>
+        <div>
+          <div class="comp-col-label">相对优势</div>
+          <ul class="comp-list">
+            <li>SafeGPT 实时监控 + 风险预警</li>
+            <li>AI 智能助手解答平台问题</li>
+            <li>Online+Offline 双模识别司机身份</li>
+          </ul>
+        </div>
+        <div>
+          <div class="comp-col-label">待改进</div>
+          <ul class="comp-list cons">
+            <li>AI Assistant 功能暂不完备</li>
+            <li>缺乏在线反馈功能</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Samsara -->
+      <div class="comp-card reveal">
+        <div class="comp-name">Samsara</div>
+        <div>
+          <div class="comp-col-label">核心功能</div>
+          <ul class="comp-list">
+            <li>多模态安全检测</li>
+            <li>远程车辆调度与管理</li>
+            <li>实时 GPS · 路线优化</li>
+          </ul>
+        </div>
+        <div>
+          <div class="comp-col-label">相对优势</div>
+          <ul class="comp-list">
+            <li>支持根据数据集生成自定义报表</li>
+            <li>在线反馈意见机制完善</li>
+            <li>AI 助手 UI 美观 · 语音输入</li>
+          </ul>
+        </div>
+        <div>
+          <div class="comp-col-label">薄弱点</div>
+          <ul class="comp-list cons">
+            <li>可维护功能（设备/参数配置）不够完备</li>
+            <li>菜单仅展示图标，hover 才提示</li>
+            <li>缺乏运营成本管控</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Netradyne -->
+      <div class="comp-card reveal">
+        <div class="comp-name">Netradyne</div>
+        <div>
+          <div class="comp-col-label">核心功能</div>
+          <ul class="comp-list">
+            <li>算法叠加 · 边缘计算实时分析</li>
+            <li>低延迟多视角视频监控</li>
+            <li>便于事故归因</li>
+          </ul>
+        </div>
+        <div>
+          <div class="comp-col-label">相对优势</div>
+          <ul class="comp-list">
+            <li>UI 设计美观 · 交互友好</li>
+            <li>操作简捷明晰 · 新手友好</li>
+            <li>报警/设备管理功能简洁完备</li>
+          </ul>
+        </div>
+        <div>
+          <div class="comp-col-label">薄弱点</div>
+          <ul class="comp-list cons">
+            <li>价格昂贵</li>
+            <li>硬件兼容性差 · 无法兼容更多设备</li>
+            <li>图标菜单 · 学习成本高</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Wialon -->
+      <div class="comp-card reveal">
+        <div class="comp-name">Wialon</div>
+        <div>
+          <div class="comp-col-label">核心功能</div>
+          <ul class="comp-list">
+            <li>多行业适配 · 支持多种车队类型</li>
+            <li>全球规模 · 覆盖范围广</li>
+            <li>低带宽优化（2G/3G 适用）</li>
+          </ul>
+        </div>
+        <div>
+          <div class="comp-col-label">相对优势</div>
+          <ul class="comp-list">
+            <li>IoT 生态开放 · 支持多种设备</li>
+            <li>油耗统计 · 大数据分析能力</li>
+            <li>适合大规模车队管理</li>
+          </ul>
+        </div>
+        <div>
+          <div class="comp-col-label">薄弱点</div>
+          <ul class="comp-list cons">
+            <li>顶部导航栏无法弹性调整</li>
+            <li>缺乏 AI 智能助手</li>
+            <li>UI 不友好 · 功能碎片化</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 SOLUTION -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label"><div class="cs-section-line"></div>04 · Solution</div>
+    <h2 class="cs-section-title">产品方案</h2>
+    <p class="cs-prose">围绕 AddSecure 的核心诉求，我将交付分为两条并行线：<strong>功能定制线</strong>（平台功能改造，三个版本迭代）和<strong>设备迁移线</strong>（P100 集成项目），以下是每项功能的真实产品设计思路。</p>
+
+    <div class="solution-steps">
+
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">配置看板（Dashboard Builder）</div>
+          <div class="step-desc">AddSecure 将平台转售给第三方终端用户，不同角色对数据的关注点完全不同——调度员关注实时位置，管理层关注安全评分，运营关注流量成本。为此，我设计了<strong>用户级个性化看板</strong>：每个用户可自由添加统计卡片，独立配置统计项、图表类型（仪表盘/趋势图/排行图/占比图）、时间范围、数据维度；支持拖拽排序、全局时间筛选一键覆盖所有卡片，以及"一键恢复默认"。<br><br>核心设计决策：卡片配置权限与数据权限分离——用户只能看到权限范围内的数据，但可以自由配置看板布局，不影响他人。行业层可注入默认配置，新用户开箱即用。</div>
+          <div class="step-pills">
+            <span class="step-pill">用户级配置隔离</span>
+            <span class="step-pill">6种图表类型</span>
+            <span class="step-pill">全局时间覆盖</span>
+            <span class="step-pill">行业层默认注入</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">安全评分体系 & 雷达图改造</div>
+          <div class="step-desc">AddSecure 对驾驶安全管理要求高，原有安全评分雷达图的报警维度为系统写死，与客户在 FT Manager 中实际配置的安全策略不一致，导致分数解读失去参考价值。<br><br>我重新设计了评分体系：雷达图维度动态读取租户在「安全分数策略」中<strong>已开启且影响安全分数</strong>的报警类型，按权重降序取前 8 项展示。同时处理了少维度降级场景：3个维度保持雷达图，2个降级为双轴对比图，1个降级为单项进度条，0个展示空状态引导配置。风险驾驶列表还新增 Alarm Tab，让安全运营人员在同一弹窗内完成报警追溯，减少页面跳转。</div>
+          <div class="step-pills">
+            <span class="step-pill">动态策略数据源</span>
+            <span class="step-pill">权重截断规则</span>
+            <span class="step-pill">少维度图表降级</span>
+            <span class="step-pill">Alarm Tab 新增</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">报警管理体验优化</div>
+          <div class="step-desc">AddSecure 的运营人员需要每日处理大量报警，原有报警卡片列表无法区分"已看过"与"未看过"，容易造成重复处理或遗漏。我设计了<strong>报警已读/已处理状态可视化</strong>：浅色主题下已处理报警背景变为深灰，深色主题下变为浅色，与未处理形成清晰对比；状态判定考虑协作场景——同租户内其他有权限用户已处理的报警，当前用户侧同步显示为已处理样式。<br><br>同时推进了<strong>报警收藏功能</strong>，让用户标记需要跟进的关键报警，不遗漏重要事件。</div>
+          <div class="step-pills">
+            <span class="step-pill">已读状态可视化</span>
+            <span class="step-pill">深浅主题联动</span>
+            <span class="step-pill">租户协作感知</span>
+            <span class="step-pill">报警收藏</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-title">P100 设备集成迁移（进行中）</div>
+          <div class="step-desc">AddSecure 旗下 1 万+ 台在用车辆搭载 P100 设备，原运行于竞品平台 Verilocation，迁移至 FT Cloud 是本项目最具战略价值的一条线。我作为产品侧负责人，梳理了 P100 设备的接口协议（5个核心端点：GPS数据上报、视频状态同步、视频文件接收、加速度计数据、行程数据），制定了分阶段推进计划：硬件排查 → 测试环境搭建 → 接口开发 → 联调验证。<br><br>关键挑战：设备<strong>只支持域名，不支持 IP:端口</strong>格式，需协调 Streamax 提前准备测试域名；同时与客户 Guillaume 团队对齐设备重定向时机，确保业务连续性不中断。</div>
+          <div class="step-pills">
+            <span class="step-pill">1万+ 台跨平台迁移</span>
+            <span class="step-pill">5个接口协议梳理</span>
+            <span class="step-pill">分阶段推进计划</span>
+            <span class="step-pill">三方协调进行中</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 05 CROSS-CULTURAL -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label"><div class="cs-section-line"></div>05 · Process</div>
+    <h2 class="cs-section-title">一个关键的流程决策</h2>
+    <p class="cs-prose">项目早期，需求通过<strong>技术支持作为中间层</strong>在我和 AddSecure 之间传递。这一模式在时效性和准确性上存在明显瓶颈——需求经多次转手后往往已经失真，响应周期也因此拉长。</p>
+
+    <div class="cs-quote">
+      <p>需求在传递过程中损耗，不是技术支持的问题，而是沟通结构的问题。产品经理需要直接听到客户的声音。</p>
+      <cite>— 流程调整背后的判断</cite>
+    </div>
+
+    <p class="cs-prose">2025.12 完全接手后，我推动将沟通模式切换为<strong>直接对接</strong>：通过 Microsoft Teams 与 AddSecure 团队实时沟通，定期召开需求对齐会议，需求确认周期从数天缩短至当日响应。这一改变直接提升了客户满意度，也让后续版本的交付节奏更为稳定。</p>
+  </div>
+
+  <!-- 06 RESULT -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label"><div class="cs-section-line"></div>06 · Result</div>
+    <h2 class="cs-section-title">项目成果</h2>
+
+    <div class="result-grid">
+      <div class="result-card rc-indigo reveal">
+        <div class="result-num">6</div>
+        <div class="result-label">核心功能模块交付</div>
+        <div class="result-desc">配置看板、安全评分体系、车辆监控页改造、车辆/司机详情改造、报警收藏、风险驾驶列表，全部按时上线。</div>
+      </div>
+      <div class="result-card rc-sage reveal">
+        <div class="result-num">3</div>
+        <div class="result-label">版本持续迭代</div>
+        <div class="result-desc">三个大版本逐步推进，每版聚焦核心问题，需求拆解合理，未出现返工或大范围回滚。</div>
+      </div>
+      <div class="result-card rc-amber reveal">
+        <div class="result-num">10,000<span style="font-size:22px;">+</span></div>
+        <div class="result-label">P100 车辆迁移（进行中）</div>
+        <div class="result-desc">欧洲最大单一迁移项目，正在协调硬件、后端、客户三方有序推进，目标零服务中断完成切换。</div>
+      </div>
+      <div class="result-card rc-rose reveal">
+        <div class="result-num">续约</div>
+        <div class="result-label">客户主动续订合约</div>
+        <div class="result-desc">客户对配置看板功能反馈极为积极，认为其灵活性和个性化程度超出预期，是续约的核心驱动因素之一。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 MY ROLE -->
+  <div class="cs-section reveal">
+    <div class="cs-section-label"><div class="cs-section-line"></div>07 · My Role</div>
+    <h2 class="cs-section-title">个人贡献</h2>
+
+    <div class="role-wrap">
+      <div>
+        <div class="role-col-title">产品职责</div>
+        <ul class="role-list">
+          <li>独立承担 AddSecure 全部需求对接与功能设计</li>
+          <li>主导竞品分析，建立 Fleet SaaS 产品认知框架</li>
+          <li>设计配置看板、安全评分等核心功能的产品方案</li>
+          <li>撰写需求文档，协调研发资源优先级</li>
+          <li>推动沟通模式从"中间层传递"升级为"直接对接"</li>
+        </ul>
+      </div>
+      <div>
+        <div class="role-col-title">项目协调</div>
+        <ul class="role-list">
+          <li>直接与 AddSecure 通过 Teams / 视频会议对接</li>
+          <li>协调前后方（技术支持、研发、客户）多方资源</li>
+          <li>主导 P100 集成项目产品侧规划与进度跟踪</li>
+          <li>跨语言沟通（英语为主要工作语言）</li>
+          <li>管理客户预期，确保每版交付按时上线</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="cs-nav-bottom">
+  <a href="index.html#work" class="nav-btn">← 返回项目列表</a>
+  <div style="display:flex;gap:12px;">
+    <a href="resume_nora.pdf" class="nav-btn" download>📄 下载简历</a>
+    <a href="index.html#contact" class="nav-btn nav-btn-primary">联系我讨论更多 →</a>
+  </div>
+</div>
+
+<script>
+// CURSOR — desktop only
+if (!('ontouchstart' in window)) {
+  const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-4}px,${my-4}px)`;});
+  (function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.transform=`translate(${rx-16}px,${ry-16}px)`;requestAnimationFrame(a);})();
+  document.querySelectorAll('a,button,.ch-card,.comp-card,.result-card,.step').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(74,92,240,.5)';ring.style.background='rgba(74,92,240,.04)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(74,92,240,.4)';ring.style.background='transparent';});
+  });
+} else {
+  document.body.style.cursor='auto';
+  document.getElementById('cur').style.display='none';
+  document.getElementById('cur-r').style.display='none';
+}
+
+// NAV scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+
+// REVEAL
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

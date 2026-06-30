@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clarion Case Study · Nora Dong</title>
+<meta name="description" content="Clarion 日本 PC 工具项目 Case Study — 跨语言需求管理、复杂国际项目推进，Nora Dong 产品经理作品集">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8f7f3;--bg2:#f0efe9;--white:#fff;--border:rgba(0,0,0,0.07);
+  --text:#1a1814;--text2:#4a4640;--muted:#9a9590;
+  --indigo:#4a5cf0;--indigo-l:#eef0fe;
+  --rose:#e8547a;--rose-l:#fef0f3;
+  --amber:#d4872a;--amber-l:#fef6ec;
+  --sage:#4a9b7a;--sage-l:#edf7f3;
+  --shadow-m:0 8px 40px rgba(0,0,0,0.09);--r:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;}
+#cur{width:8px;height:8px;background:var(--indigo);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;}
+#cur-r{width:32px;height:32px;border:1.5px solid rgba(74,92,240,.4);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .2s,height .2s,border-color .2s,background .2s;}
+nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:20px 64px;display:flex;justify-content:space-between;align-items:center;transition:all .4s;}
+nav.scrolled{background:rgba(248,247,243,0.94);backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--border);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--text);text-decoration:none;}
+.nav-back{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s;}
+.nav-back:hover{color:var(--indigo);}
+.hero{padding:140px 64px 80px;max-width:1100px;margin:0 auto;}
+.eyebrow{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards;}
+.eyebrow-line{width:28px;height:2px;background:var(--indigo);border-radius:2px;}
+h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,62px);font-weight:500;line-height:1.05;margin-bottom:16px;opacity:0;animation:fadeUp .7s .2s forwards;}
+h1 em{font-style:italic;color:var(--indigo);}
+.subtitle{font-size:17px;color:var(--text2);line-height:1.7;max-width:620px;margin-bottom:48px;opacity:0;animation:fadeUp .7s .3s forwards;}
+.meta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:48px;opacity:0;animation:fadeUp .7s .4s forwards;}
+.meta-chip{padding:10px 20px;background:var(--white);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;gap:3px;}
+.meta-chip-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+.meta-chip-val{font-size:13px;font-weight:500;color:var(--text);}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;opacity:0;animation:fadeUp .7s .5s forwards;}
+.tag{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:500;}
+.outcome-wrap{padding:0 64px;max-width:1228px;margin:0 auto;}
+.outcome{background:var(--text);border-radius:24px;padding:44px 64px;margin-bottom:96px;display:grid;grid-template-columns:repeat(4,1fr);position:relative;overflow:hidden;}
+.outcome::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--amber),var(--indigo),var(--sage));}
+.ob{text-align:center;padding:0 16px;}
+.ob+.ob{border-left:1px solid rgba(255,255,255,.08);}
+.ob-n{font-family:'Playfair Display',serif;font-size:40px;font-weight:500;color:#fff;line-height:1;margin-bottom:6px;}
+.ob-l{font-size:12px;color:rgba(255,255,255,.45);}
+.body{max-width:1100px;margin:0 auto;padding:0 64px 120px;}
+.sec{margin-bottom:80px;}
+.sec-label{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:16px;}
+.sec-line{width:28px;height:2px;background:var(--indigo);border-radius:2px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);font-weight:500;margin-bottom:24px;line-height:1.2;}
+.prose{font-size:15px;line-height:1.9;color:var(--text2);max-width:720px;}
+.prose+.prose{margin-top:14px;}
+.prose strong{color:var(--text);font-weight:500;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:transform .3s,box-shadow .3s;}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.card li{font-size:13px;line-height:1.7;color:var(--text2);padding-left:16px;position:relative;}
+.card li::before{content:'→';position:absolute;left:0;color:var(--indigo);font-size:11px;top:2px;}
+.challenge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;}
+.ch-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px 24px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.ch-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.ch-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.cc1::before{background:var(--rose);}
+.cc2::before{background:var(--amber);}
+.cc3::before{background:var(--indigo);}
+.ch-icon{font-size:24px;margin-bottom:12px;}
+.ch-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.ch-desc{font-size:13px;line-height:1.8;color:var(--muted);}
+.steps{display:flex;flex-direction:column;gap:24px;margin-top:32px;}
+.step{display:grid;grid-template-columns:64px 1fr;gap:24px;align-items:start;}
+.step-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:500;color:rgba(74,92,240,.12);line-height:1;}
+.step-content{padding-top:8px;}
+.step-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.step-desc{font-size:14px;line-height:1.85;color:var(--text2);}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.pill{padding:4px 12px;background:var(--indigo-l);border-radius:100px;font-size:11px;color:var(--indigo);font-weight:500;}
+.cross-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:36px 40px;margin-top:32px;}
+.cross-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:20px;}
+.cross-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.cross-item{padding:16px 20px;border-radius:14px;}
+.ci-lang{background:var(--rose-l);}
+.ci-req{background:var(--amber-l);}
+.ci-collab{background:var(--sage-l);}
+.ci-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+.ci-lang .ci-label{color:var(--rose);}
+.ci-req .ci-label{color:var(--amber);}
+.ci-collab .ci-label{color:var(--sage);}
+.ci-text{font-size:13px;line-height:1.8;color:var(--text2);}
+.quote{margin:40px 0;padding:32px 36px;background:var(--indigo-l);border-left:3px solid var(--indigo);border-radius:0 14px 14px 0;}
+.quote p{font-family:'Playfair Display',serif;font-size:17px;font-style:italic;line-height:1.7;color:var(--text);margin-bottom:10px;}
+.quote cite{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;}
+.res-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:transform .3s,box-shadow .3s;}
+.res-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.res-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:500;line-height:1;margin-bottom:6px;}
+.res-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.res-desc{font-size:13px;line-height:1.7;color:var(--muted);}
+.rc-i .res-num{color:var(--indigo);}
+.rc-s .res-num{color:var(--sage);}
+.rc-r .res-num{color:var(--rose);}
+.rc-a .res-num{color:var(--amber);}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.nav-bottom{border-top:1px solid var(--border);padding:48px 64px;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto;}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1.5px solid var(--border);border-radius:100px;font-size:13px;color:var(--text2);text-decoration:none;transition:all .3s;}
+.nav-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+.nav-btn-p{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+.nav-btn-p:hover{background:#3546d4;color:#fff;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:rgba(74,92,240,.3);border-radius:4px;}
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .hero,.body,.outcome-wrap,.nav-bottom{padding-left:24px;padding-right:24px;}
+  .hero{padding-top:110px;}
+  .outcome{grid-template-columns:1fr 1fr;padding:32px 24px;}
+  .ob+.ob{border-left:none;}
+  .two-col,.result-grid,.challenge-grid,.cross-grid{grid-template-columns:1fr;}
+  .step{grid-template-columns:1fr;}
+  .step-num{font-size:28px;}
+  .nav-bottom{flex-direction:column;gap:16px;}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Nora D.</a>
+  <a href="index.html#work" class="nav-back">← 返回项目列表</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow"><div class="eyebrow-line"></div>Case Study · 日本国际项目</div>
+  <h1>Clarion —<br><em>跨语言需求管理</em><br>与国际项目推进</h1>
+  <p class="subtitle">日本最大商用车经销商 Clarion 定制开发项目，独立完成 50+ 页全日语资料的结构化拆解，主导 4 个版本迭代，助力客户成功转化 30 万+终端用户。</p>
+  <div class="meta-row">
+    <div class="meta-chip"><span class="meta-chip-label">客户</span><span class="meta-chip-val">Clarion · 日本</span></div>
+    <div class="meta-chip"><span class="meta-chip-label">项目类型</span><span class="meta-chip-val">国际定制开发 · 中心立项</span></div>
+    <div class="meta-chip"><span class="meta-chip-label">我的角色</span><span class="meta-chip-val">独立产品经理</span></div>
+    <div class="meta-chip"><span class="meta-chip-label">交付节点</span><span class="meta-chip-val">2026.01 软硬件联调</span></div>
+    <div class="meta-chip"><span class="meta-chip-label">项目状态</span><span class="meta-chip-val" style="color:var(--sage);">● 进行中</span></div>
+  </div>
+  <div class="tag-row">
+    <span class="tag" style="background:var(--rose-l);color:var(--rose);">日本市场</span>
+    <span class="tag" style="background:var(--amber-l);color:var(--amber);">跨语言需求管理</span>
+    <span class="tag" style="background:var(--indigo-l);color:var(--indigo);">PC 工具产品</span>
+    <span class="tag" style="background:var(--sage-l);color:var(--sage);">离线嵌入式系统</span>
+    <span class="tag" style="background:var(--bg2);color:var(--text2);">复杂需求治理</span>
+  </div>
+</div>
+
+<div class="outcome-wrap reveal">
+  <div class="outcome">
+    <div class="ob"><div class="ob-n">50+</div><div class="ob-l">页全日语资料独立拆解</div></div>
+    <div class="ob"><div class="ob-n">4</div><div class="ob-l">个版本独立推进迭代</div></div>
+    <div class="ob"><div class="ob-n">30万+</div><div class="ob-l">终端用户成功转化</div></div>
+    <div class="ob"><div class="ob-n">替换</div><div class="ob-l">原有供应商，进入日本市场</div></div>
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>01 · Background</div>
+    <h2 class="sec-title">客户背景与项目机会</h2>
+    <p class="prose">Clarion 是<strong>日本最大商用车经销商</strong>，已拥有一套完整成熟的车队管理方案：FMS UNIT + POWER BOX + CF4000 + NFC READER / ADAS CAM / IN-CABIN / SIDE CAM / REAR CAM + 客户自有平台。这套方案稳定运行多年，覆盖 30 万+终端用户。</p>
+    <p class="prose">2025 年，整套方案中的 <strong>FMS UNIT 设备供应出现问题</strong>，客户需要寻找新的供应商定制开发进行替换。这是锐明技术进入日本商用车市场的战略机会——由锐明定制开发新的 FMS 设备替换原有 FMS UNIT，FT 团队负责配套提供 <strong>PC 工具</strong>，用于管理 FMS 设备中的 SD 卡。</p>
+    <div class="two-col">
+      <div class="card reveal">
+        <div class="card-title">🏭 客户现有方案</div>
+        <ul>
+          <li>FMS UNIT（待替换） + POWER BOX + CF4000</li>
+          <li>NFC READER / ADAS CAM / IN-CABIN 摄像头</li>
+          <li>SIDE CAM / REAR CAM 多路监控</li>
+          <li>客户自有数据管理平台</li>
+          <li>覆盖日本 30 万+ 商用车终端用户</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-title">🎯 FT 团队交付目标</div>
+        <ul>
+          <li>PC 工具：Windows 10+ 离线单机运行</li>
+          <li>管理 FMS 设备 SD 卡的读写与配置</li>
+          <li>支持运行数据备份、导出、报表打印</li>
+          <li>驾驶员 / 车辆 / 营业所数据本地管理</li>
+          <li>目标节点：2026.01.20 软硬件联调</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>02 · Challenge</div>
+    <h2 class="sec-title">三大核心挑战</h2>
+    <div class="challenge-grid">
+      <div class="ch-card cc1 reveal">
+        <div class="ch-icon">🇯🇵</div>
+        <div class="ch-title">全日语资料，零翻译支持</div>
+        <div class="ch-desc">客户提供的 50+ 页需求资料全部为日语，包含专业术语、设备规格和业务流程说明。没有专职翻译介入，需要产品经理独立完成理解、提炼和结构化。</div>
+      </div>
+      <div class="ch-card cc2 reveal">
+        <div class="ch-icon">🔌</div>
+        <div class="ch-title">离线嵌入式场景，非常规产品形态</div>
+        <div class="ch-desc">FMS 设备不支持联网，只有一个串口，所有配置必须通过 PC 工具写入 SD 卡，设备再读取 SD 卡工作。这与常规 SaaS 平台的产品设计逻辑完全不同，需要重新建立产品认知。</div>
+      </div>
+      <div class="ch-card cc3 reveal">
+        <div class="ch-icon">🔀</div>
+        <div class="ch-title">复杂需求收敛，多方对齐</div>
+        <div class="ch-desc">客户方需求细节多、部分待确认（如驾驶员登录模式），同时需要协调锐明硬件团队、FT 软件团队和客户三方的进度节点，确保 2026 年 1 月联调节点不滑坡。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>03 · Requirement Analysis</div>
+    <h2 class="sec-title">跨语言需求管理方法论</h2>
+    <p class="prose">面对全日语资料，建立了一套系统性的需求拆解方法，确保信息不遗漏、不失真。</p>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">结构化拆解日语原始资料</div>
+          <div class="step-desc">借助 AI 工具（Claude）辅助翻译 + 专业术语人工校验的方式，将 50+ 页日语文档逐模块拆解，识别出 PC 工具的 10 大功能模块：登录角色、运行数据保存、运行数据显示、驾驶员/车辆/营业所数据管理、数字式行车记录仪设置、SD 卡初始化、车辆设置、PC 工具设置、查看日志。</div>
+          <div class="pills"><span class="pill">AI 辅助翻译</span><span class="pill">专业术语校验</span><span class="pill">模块映射</span></div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">建立模块级需求映射关系</div>
+          <div class="step-desc">将客户原有方案的功能与 FT PC 工具的能力边界做明确映射——哪些功能 FT 负责实现，哪些沿用客户既有系统，哪些需要新增定制。特别厘清了<strong>SD 卡数据 vs. 本地数据</strong>的存储分工：车辆 ID、车辆设置参数、FMS 配置参数写入 SD 卡；驾驶员/车辆/营业所数据本地存储，换电脑后可迁移。</div>
+          <div class="pills"><span class="pill">功能边界划定</span><span class="pill">存储分工设计</span><span class="pill">数据归属明确</span></div>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">待确认项管理与需求收敛</div>
+          <div class="step-desc">识别并记录所有待客户确认的模糊需求（如"驾驶员登录模式是否需要支持"），通过会议和书面确认逐步收敛。建立需求变更记录，防止多版本迭代中信息混乱。整个过程推动复杂国际项目需求从"散点"到"结构化"逐步收敛。</div>
+          <div class="pills"><span class="pill">待确认项追踪</span><span class="pill">变更记录管理</span><span class="pill">需求逐步收敛</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>04 · Solution</div>
+    <h2 class="sec-title">产品方案：PC 工具功能体系</h2>
+    <p class="prose">PC 工具作为离线单机产品，核心设计原则是<strong>SD 卡为数据枢纽</strong>——一切配置通过 PC 工具写入 SD 卡，FMS 设备从 SD 卡读取参数工作。</p>
+    <div class="two-col">
+      <div class="card reveal">
+        <div class="card-title">💾 SD 卡数据管理</div>
+        <ul>
+          <li>SD 卡初始化（Master 模式 / 恢复模式）</li>
+          <li>格式化 ext4 文件系统 + 写入 fms.json 配置</li>
+          <li>直接挂载并读写 commonfs 文件系统</li>
+          <li>车辆 ID、FMS 配置参数写入 SD 卡</li>
+          <li>SD 卡插入后自动触发数据备份流程</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-title">📊 运行数据与报表</div>
+        <ul>
+          <li>记录三要素：位置信息、运行信息、事件信息</li>
+          <li>运行详细数据（1 分钟间隔精度）</li>
+          <li>数据导出至 PC 备份</li>
+          <li>PC 工具呈现报表 + 导出 + 打印</li>
+          <li>未保存数据自动备份至默认路径</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-title">👤 基础数据本地管理</div>
+        <ul>
+          <li>驾驶员数据：增删查改，本地存储</li>
+          <li>车辆数据：增删查改，本地存储</li>
+          <li>营业所数据：增删查改，本地存储</li>
+          <li>更换电脑后数据可迁移恢复</li>
+          <li>系统托盘后台运行，插入 SD 卡自动触发</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="card-title">⚙️ 系统配置</div>
+        <ul>
+          <li>数字式行车记录仪参数配置</li>
+          <li>车辆设置参数管理</li>
+          <li>SD 卡驱动器 / 数据保存路径设置</li>
+          <li>管理员账号密码维护（PC 工具设置）</li>
+          <li>查看设备日志（专有人员最高权限）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>05 · Cross-Cultural Collaboration</div>
+    <h2 class="sec-title">国际项目推进：跨文化协作实践</h2>
+    <div class="cross-wrap reveal">
+      <div class="cross-title">三个维度的跨文化挑战与应对</div>
+      <div class="cross-grid">
+        <div class="cross-item ci-lang">
+          <div class="ci-label">🗣️ 语言维度</div>
+          <div class="ci-text">全日语文档独立处理；借助 Claude 辅助翻译，人工校验专业术语（如"三要素""数字式行车记录仪""营业所"等日本商用车行业专有概念）；英语作为主要沟通语言与客户书面确认需求。</div>
+        </div>
+        <div class="cross-item ci-req">
+          <div class="ci-label">📋 需求维度</div>
+          <div class="ci-text">日本客户需求颗粒度极细，习惯将每个边界条件都明确列出；反过来，这也要求产品文档描述同等精确。建立了需求确认机制，所有待定项都有明确的 Owner 和确认节点。</div>
+        </div>
+        <div class="cross-item ci-collab">
+          <div class="ci-label">🤝 协作维度</div>
+          <div class="ci-text">协调锐明硬件、FT 软件、客户三方进度。对齐 2026.01.20 联调节点，提前识别风险（如设备只支持串口不支持网络，影响数据同步方案选型），确保各方准备同步推进。</div>
+        </div>
+      </div>
+    </div>
+    <div class="quote reveal">
+      <p>真正的国际化产品能力，不只是产品支持多语言——而是产品经理能在语言、文化、业务逻辑三个层面同时跨越障碍，让需求准确落地。</p>
+      <cite>— Clarion 项目经验总结</cite>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-label"><div class="sec-line"></div>06 · Result</div>
+    <h2 class="sec-title">项目成果</h2>
+    <div class="result-grid">
+      <div class="res-card rc-r reveal">
+        <div class="res-num">50+</div>
+        <div class="res-title">页全日语资料独立完成结构化拆解</div>
+        <div class="res-desc">无专职翻译支持，借助 AI 工具辅助 + 人工专业校验，完整提炼出 PC 工具 10 大功能模块需求。</div>
+      </div>
+      <div class="res-card rc-s reveal">
+        <div class="res-num">30万+</div>
+        <div class="res-title">终端用户成功转化</div>
+        <div class="res-desc">助力 Clarion 客户在 4 个版本迭代后完成平台切换，覆盖日本 30 万+商用车终端用户。</div>
+      </div>
+      <div class="res-card rc-i reveal">
+        <div class="res-num">4</div>
+        <div class="res-title">版本独立推进，需求逐步收敛</div>
+        <div class="res-desc">从散乱的日语原始资料到结构化需求文档，4 个迭代版本稳步交付，未出现大范围需求反工。</div>
+      </div>
+      <div class="res-card rc-a reveal">
+        <div class="res-num">战略</div>
+        <div class="res-title">打开日本商用车市场入口</div>
+        <div class="res-desc">Clarion 项目是锐明进入日本市场的战略机会，PC 工具的顺利交付是整套替换方案中的关键一环。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav-bottom">
+  <a href="index.html#work" class="nav-btn">← 返回项目列表</a>
+  <div style="display:flex;gap:12px;">
+    <a href="resume_nora.pdf" class="nav-btn" download>📄 下载简历</a>
+    <a href="index.html#contact" class="nav-btn nav-btn-p">联系我讨论更多 →</a>
+  </div>
+</div>
+
+<script>
+if (!('ontouchstart' in window)) {
+  const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-4}px,${my-4}px)`;});
+  (function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.transform=`translate(${rx-16}px,${ry-16}px)`;requestAnimationFrame(a);})();
+  document.querySelectorAll('a,button,.card,.ch-card,.res-card,.step').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(74,92,240,.5)';ring.style.background='rgba(74,92,240,.04)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(74,92,240,.4)';ring.style.background='transparent';});
+  });
+} else {
+  document.getElementById('cur').style.display='none';
+  document.getElementById('cur-r').style.display='none';
+}
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
