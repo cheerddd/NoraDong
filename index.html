@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nora Dong · 董宁 · 产品经理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6fa;
+  --bg2: #eeecf3;
+  --white: #ffffff;
+  --border: rgba(34,24,58,0.10);
+  --text: #171321;
+  --text2: #4f495d;
+  --muted: #8e879b;
+  --indigo: #7357ff;
+  --indigo-l: #f0edff;
+  --indigo-m: rgba(115,87,255,0.16);
+  --rose: #e8547a;
+  --rose-l: #fef0f3;
+  --amber: #d4872a;
+  --amber-l: #fef6ec;
+  --sage: #4a9b7a;
+  --sage-l: #edf7f3;
+  --shadow-s: 0 8px 24px rgba(31,20,59,0.07);
+  --shadow-m: 0 18px 50px rgba(31,20,59,0.12);
+  --shadow-l: 0 32px 100px rgba(0,0,0,0.30);
+  --r: 20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+#cur{width:8px;height:8px;background:var(--indigo);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:transform .08s;}
+#cur-r{width:32px;height:32px;border:1.5px solid rgba(74,92,240,.4);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:width .2s,height .2s,border-color .2s,background .2s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:20px 64px;display:flex;justify-content:space-between;align-items:center;transition:all .4s;}
+nav.scrolled{background:rgba(248,247,243,0.94);backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--border);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--text);text-decoration:none;letter-spacing:.04em;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:400;transition:color .3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--indigo);transition:width .3s;}
+.nav-links a:hover,.nav-links a.active{color:var(--indigo);}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.nav-cta{padding:9px 22px;background:var(--indigo);color:#fff!important;border-radius:100px;font-size:11.5px!important;letter-spacing:.1em!important;transition:all .3s!important;}
+.nav-cta:hover{background:#3546d4!important;transform:translateY(-1px);box-shadow:0 6px 20px rgba(74,92,240,.35);}
+.nav-cta::after{display:none!important;}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1.1fr 0.9fr;align-items:center;padding:120px 64px 80px;gap:80px;position:relative;overflow:hidden;}
+.hero-orb1{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(74,92,240,.07) 0%,transparent 65%);top:-200px;right:-150px;border-radius:50%;pointer-events:none;animation:floatOrb 8s ease-in-out infinite;}
+.hero-orb2{position:absolute;width:450px;height:450px;background:radial-gradient(circle,rgba(232,84,122,.05) 0%,transparent 65%);bottom:-100px;left:25%;border-radius:50%;pointer-events:none;animation:floatOrb 10s ease-in-out infinite reverse;}
+.hero-orb3{position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(74,155,122,.04) 0%,transparent 65%);top:30%;left:-80px;border-radius:50%;pointer-events:none;animation:floatOrb 12s ease-in-out infinite;}
+
+.hero-left{position:relative;z-index:2;}
+.h-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;background:var(--indigo-l);border-radius:100px;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--indigo);margin-bottom:28px;opacity:0;animation:fadeUp .7s .2s forwards;}
+.h-dot{width:6px;height:6px;background:var(--indigo);border-radius:50%;animation:pulse 2s infinite;}
+.h-name{font-family:'Playfair Display',serif;font-size:clamp(52px,5.5vw,84px);font-weight:500;line-height:.98;color:var(--text);opacity:0;animation:fadeUp .8s .35s forwards;}
+.h-name em{font-style:italic;color:var(--indigo);}
+.h-cn{font-family:'Noto Serif SC',serif;font-size:19px;font-weight:300;letter-spacing:.55em;color:var(--muted);margin-top:14px;opacity:0;animation:fadeUp .8s .5s forwards;}
+
+/* Self summary */
+.h-summary{margin-top:28px;padding:24px 28px;background:var(--white);border-radius:16px;border-left:3px solid var(--indigo);box-shadow:var(--shadow-s);font-size:14px;line-height:1.9;color:var(--text2);opacity:0;animation:fadeUp .8s .65s forwards;}
+.h-summary strong{color:var(--indigo);font-weight:500;}
+
+.h-actions{display:flex;gap:14px;margin-top:28px;opacity:0;animation:fadeUp .8s .8s forwards;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--indigo);color:#fff;border-radius:100px;font-size:13px;font-weight:500;letter-spacing:.06em;text-decoration:none;border:none;cursor:pointer;transition:all .3s;}
+.btn-primary:hover{background:#3546d4;transform:translateY(-2px);box-shadow:0 10px 30px rgba(74,92,240,.35);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:transparent;color:var(--text);border:1.5px solid var(--border);border-radius:100px;font-size:13px;font-weight:400;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:all .3s;}
+.btn-outline:hover{border-color:var(--indigo);color:var(--indigo);transform:translateY(-2px);}
+
+/* Hero right card */
+.hero-right{position:relative;z-index:2;opacity:0;animation:fadeIn 1s .9s forwards;}
+.id-panel{background:var(--white);border-radius:28px;padding:44px;box-shadow:var(--shadow-l);position:relative;overflow:hidden;}
+.id-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--indigo),var(--rose),var(--amber),var(--sage));}
+
+.id-avatar{width:92px;height:92px;border-radius:50%;background:linear-gradient(135deg,var(--indigo-l),var(--indigo-m));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:28px;color:var(--indigo);font-weight:500;margin-bottom:20px;border:2px solid rgba(74,92,240,.2);overflow:hidden;box-shadow:0 8px 24px rgba(74,92,240,.14);}
+.id-avatar img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%;}
+.id-name-en{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;margin-bottom:2px;}
+.id-name-cn{font-family:'Noto Serif SC',serif;font-size:13px;letter-spacing:.35em;color:var(--muted);margin-bottom:20px;}
+
+.id-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.id-info-item{padding:12px 16px;background:var(--bg);border-radius:12px;}
+.id-info-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.id-info-val{font-size:13px;font-weight:500;color:var(--text);}
+
+.id-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.id-chip{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--bg);border-radius:100px;font-size:12px;color:var(--text2);transition:all .3s;cursor:default;}
+.id-chip:hover{background:var(--indigo-l);color:var(--indigo);transform:translateY(-2px);}
+
+.id-divider{height:1px;background:var(--border);margin-bottom:20px;}
+.id-contact{display:flex;flex-direction:column;gap:8px;}
+.id-contact-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2);}
+.id-contact-icon{width:28px;height:28px;border-radius:8px;background:var(--indigo-l);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+
+/* SECTIONS */
+section{padding:96px 64px;max-width:1240px;margin:0 auto;}
+.bg-w{background:var(--white);padding:96px 0;}
+.bg-inner{max-width:1240px;margin:0 auto;padding:0 64px;}
+.eyebrow{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:12px;}
+.eyebrow-line{width:28px;height:2px;background:var(--indigo);border-radius:2px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(30px,3.5vw,48px);font-weight:500;line-height:1.15;margin-bottom:48px;color:var(--text);}
+
+/* INTENT BAR */
+.intent-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:0;}
+.intent-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px 24px;text-align:center;transition:all .35s;position:relative;overflow:hidden;}
+.intent-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--indigo-l),transparent);opacity:0;transition:opacity .35s;}
+.intent-card:hover::before{opacity:1;}
+.intent-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-m);border-color:rgba(74,92,240,.2);}
+.intent-icon{font-size:26px;margin-bottom:12px;}
+.intent-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.intent-val{font-size:15px;font-weight:600;color:var(--text);}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:56px;}
+.stat-card{background:var(--white);padding:36px 28px;text-align:center;transition:background .3s;}
+.stat-card:hover{background:var(--indigo-l);}
+.stat-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:500;color:var(--indigo);line-height:1;margin-bottom:6px;}
+.stat-sup{font-size:20px;}
+.stat-label{font-size:12px;color:var(--muted);letter-spacing:.06em;}
+
+/* ACHIEVE */
+.achieve-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.ac-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:32px 28px;position:relative;overflow:hidden;transition:transform .35s,box-shadow .35s;}
+.ac-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-m);}
+.ac-top{position:absolute;top:0;left:0;right:0;height:3px;}
+.ac-n{font-family:'Playfair Display',serif;font-size:48px;font-weight:500;line-height:1;color:var(--text);margin-bottom:8px;}
+.ac-u{font-size:18px;color:var(--muted);}
+.ac-lbl{font-size:14px;font-weight:500;margin-bottom:8px;}
+.ac-desc{font-size:13px;line-height:1.8;color:var(--muted);}
+.tag{display:inline-block;padding:4px 12px;border-radius:100px;font-size:11px;font-weight:500;letter-spacing:.07em;margin-bottom:18px;}
+.ti{background:var(--indigo-l);color:var(--indigo);}
+.tr{background:var(--rose-l);color:var(--rose);}
+.ta{background:var(--amber-l);color:var(--amber);}
+.ts{background:var(--sage-l);color:var(--sage);}
+
+/* PROJECTS — accordion style */
+.proj-list{display:flex;flex-direction:column;gap:16px;}
+.proj-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:box-shadow .35s;}
+.proj-card:hover{box-shadow:var(--shadow-m);}
+.proj-header{padding:32px 40px;display:grid;grid-template-columns:60px 1fr auto;gap:28px;align-items:center;cursor:pointer;transition:background .3s;}
+.proj-header:hover{background:rgba(74,92,240,.02);}
+.proj-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:500;color:rgba(0,0,0,.07);line-height:1;}
+.proj-head-right{text-align:right;}
+.proj-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;margin-bottom:6px;}
+.proj-sub{font-size:13px;color:var(--muted);}
+.proj-toggle{width:36px;height:36px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .35s;flex-shrink:0;}
+.proj-card.open .proj-toggle{background:var(--indigo);color:#fff;transform:rotate(45deg);}
+.proj-body{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(0.16,1,0.3,1);}
+.proj-body-inner{padding:0 40px 36px;display:grid;grid-template-columns:1fr 280px;gap:48px;}
+.proj-desc{font-size:14px;line-height:1.9;color:var(--text2);margin-bottom:20px;}
+.proj-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.proj-pill{padding:5px 14px;background:var(--bg);border-radius:100px;font-size:12px;color:var(--text2);}
+.proj-result{background:var(--indigo-l);border-radius:16px;padding:24px;text-align:center;}
+.result-label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--indigo);margin-bottom:10px;opacity:.7;}
+.result-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:500;color:var(--indigo);line-height:1.2;}
+.proj-result{display:flex;flex-direction:column;}
+.result-visual{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;min-height:190px;margin-top:26px;padding-top:26px;border-top:1px solid rgba(172,145,235,.18);}
+.result-icon{width:104px;height:104px;display:grid;place-items:center;border-radius:28px;background:radial-gradient(circle at 30% 20%,rgba(186,155,255,.18),rgba(118,81,197,.035));border:1px solid rgba(172,145,235,.19);box-shadow:0 12px 38px rgba(108,68,194,.10);color:#c1a9f1;}
+.result-icon svg{width:52px;height:52px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;}
+.result-cues{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;}
+.result-cue{font-size:10px;line-height:1.5;padding:5px 9px;border-radius:8px;background:rgba(160,125,232,.08);color:#bba9d9;border:1px solid rgba(172,145,235,.12);}
+@media(max-width:900px){.result-visual{min-height:140px;}.result-icon{width:80px;height:80px;border-radius:22px;}.result-icon svg{width:42px;height:42px;}}
+.proj-details{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:0 0 20px;}
+.proj-detail{padding:13px 15px;background:var(--bg);border-radius:12px;}
+.proj-detail-label{font-size:10px;letter-spacing:.12em;color:var(--indigo);font-weight:600;margin-bottom:5px;}
+.proj-detail-text{font-size:12px;line-height:1.7;color:var(--text2);}
+.project-stage{display:inline-flex;align-items:center;gap:6px;margin-top:9px;padding:5px 10px;border-radius:999px;background:rgba(130,95,218,.10);border:1px solid rgba(156,125,230,.16);color:#ab93de;font-size:10px;line-height:1.3;letter-spacing:.04em;}
+.project-stage::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px rgba(155,123,227,.10);}
+
+/* EVIDENCE-LED CONTENT */
+.practice-grid,.principle-grid,.ai-proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.practice-card,.principle-card,.ai-proof-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:28px;box-shadow:0 12px 42px rgba(41,24,72,.04);}
+.practice-kicker,.proof-state{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--indigo);margin-bottom:12px;font-weight:600;}
+.practice-title,.principle-title,.ai-proof-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:10px;}
+.practice-desc,.principle-desc,.ai-proof-desc{font-size:13px;line-height:1.8;color:var(--muted);}
+.practice-result{margin-top:18px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;line-height:1.7;color:var(--text2);}
+.practice-result strong{color:var(--indigo);font-size:18px;font-weight:600;}
+.principle-grid{margin:0 0 30px;}
+.principle-card{padding:22px 24px;}
+.principle-icon{font-size:22px;margin-bottom:12px;}
+.ai-proof-section{padding-top:72px;padding-bottom:72px;}
+.ai-proof-card{position:relative;overflow:hidden;}
+.ai-proof-card::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#7157d9,#a88cf0);}
+.proof-flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:18px;}
+.proof-node{padding:6px 9px;border-radius:8px;background:var(--indigo-l);color:var(--indigo);font-size:10px;line-height:1.4;}
+.proof-arrow{font-size:11px;color:var(--muted);}
+.ai-eval-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px;}
+.eval-card{padding:18px;background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(247,244,252,.82));border:1px solid var(--border);border-radius:14px;}
+.eval-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:7px;}
+.eval-desc{font-size:11px;line-height:1.7;color:var(--muted);}
+
+/* TRAITS */
+.traits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.trait-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:30px 26px;transition:transform .35s,box-shadow .35s;position:relative;overflow:hidden;}
+.trait-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.trait-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-m);}
+.trait-card:hover::after{transform:scaleX(1);}
+.tc-i::after{background:var(--indigo);} .tc-r::after{background:var(--rose);} .tc-a::after{background:var(--amber);} .tc-s::after{background:var(--sage);}
+.t-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;}
+.ic-i{background:var(--indigo-l);} .ic-r{background:var(--rose-l);} .ic-a{background:var(--amber-l);} .ic-s{background:var(--sage-l);}
+.trait-title{font-size:14px;font-weight:600;margin-bottom:8px;}
+.trait-desc{font-size:13px;line-height:1.85;color:var(--muted);}
+
+/* SKILLS */
+.skills-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+.skill-group-title{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--indigo);font-weight:500;margin-bottom:20px;}
+.skill-item{margin-bottom:18px;}
+.skill-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.skill-name{font-size:13px;font-weight:400;color:var(--text);}
+.skill-usage{font-size:11px;color:var(--muted);letter-spacing:.05em;}
+.skill-bar{display:none;}
+.skill-row{align-items:flex-start;gap:20px;padding:13px 15px;background:var(--white);border:1px solid var(--border);border-radius:12px;}
+.skill-name{font-weight:500;flex:0 0 38%;line-height:1.6;}
+.skill-usage{max-width:58%;line-height:1.6;text-align:right;letter-spacing:0;}
+.skill-fill{height:100%;background:linear-gradient(90deg,var(--indigo),rgba(74,92,240,.5));border-radius:3px;transform:scaleX(0);transform-origin:left;transition:transform 1.2s cubic-bezier(0.16,1,0.3,1);}
+.skill-item.vis .skill-fill{transform:scaleX(1);}
+
+/* tool tags */
+.tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px;}
+.tool-tag{display:flex;align-items:center;gap:8px;width:100%;min-width:0;padding:10px 18px;background:var(--white);border:1px solid var(--border);border-radius:12px;font-size:13px;color:var(--text2);transition:all .3s;}
+.tool-tag:hover{border-color:var(--indigo);color:var(--indigo);transform:translateY(-2px);box-shadow:var(--shadow-s);}
+.tool-emoji{font-size:16px;}
+.language-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.language-card{display:flex;align-items:center;justify-content:space-between;gap:14px;min-width:0;padding:14px 16px;background:var(--white);border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 36px rgba(43,25,76,.04);}
+.language-name{font-size:13px;font-weight:500;color:var(--text);}
+.language-level{font-size:11px;line-height:1.4;color:var(--muted);text-align:right;}
+
+/* METHODS */
+.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:18px;}
+.method-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.m-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:30px 26px;transition:all .35s;}
+.m-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);border-color:rgba(74,92,240,.2);}
+.m-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:500;color:rgba(74,92,240,.1);line-height:1;margin-bottom:12px;}
+.m-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.m-desc{font-size:13px;line-height:1.85;color:var(--muted);}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:28px;}
+.tl::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:2px;background:linear-gradient(var(--indigo),rgba(74,92,240,.08));}
+.tl-item{position:relative;margin-bottom:44px;opacity:0;transform:translateX(-16px);transition:opacity .6s,transform .6s;}
+.tl-item.vis{opacity:1;transform:translateX(0);}
+.tl-dot{position:absolute;left:-35px;top:10px;width:10px;height:10px;background:var(--indigo);border:2px solid var(--white);border-radius:50%;box-shadow:0 0 0 3px rgba(74,92,240,.2);}
+.tl-period{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--indigo);margin-bottom:5px;font-weight:500;}
+.tl-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;margin-bottom:3px;}
+.tl-org{font-size:13px;color:var(--muted);margin-bottom:12px;}
+.tl-desc{font-size:14px;line-height:1.85;color:var(--text2);max-width:600px;}
+
+/* PERSONALITY */
+.pers-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;}
+.pers-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:40px;position:relative;overflow:hidden;transition:transform .35s,box-shadow .35s;}
+.pers-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-m);}
+.pers-bg{position:absolute;right:20px;top:8px;font-family:'Playfair Display',serif;font-size:90px;font-weight:700;opacity:.04;line-height:1;pointer-events:none;user-select:none;}
+.pers-eye{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.pers-title{font-family:'Playfair Display',serif;font-size:42px;font-weight:500;line-height:1;margin-bottom:5px;}
+.pers-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--text2);margin-bottom:18px;}
+.pers-desc{font-size:14px;line-height:1.85;color:var(--muted);}
+.char-grid{display:flex;flex-wrap:wrap;gap:10px;}
+.char-tag{display:flex;align-items:center;gap:7px;padding:9px 18px;background:var(--white);border:1px solid var(--border);border-radius:100px;font-size:13px;color:var(--text2);transition:all .3s;cursor:default;}
+.char-tag:hover{border-color:var(--indigo);color:var(--indigo);background:var(--indigo-l);transform:translateY(-2px);}
+
+/* HOBBIES */
+.hobby-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.hb-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:26px 18px;text-align:center;transition:all .35s;}
+.hb-card:hover{border-color:var(--indigo);transform:translateY(-4px);box-shadow:var(--shadow-s);}
+.hb-e{font-size:26px;margin-bottom:8px;}
+.hb-l{font-size:13px;color:var(--text2);}
+
+/* CONTACT */
+.contact-wrap{background:var(--text);border-radius:32px;padding:80px;text-align:center;position:relative;overflow:hidden;margin:0 64px 96px;}
+.c-orb1{position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(74,92,240,.3) 0%,transparent 70%);top:-150px;right:-80px;border-radius:50%;}
+.c-orb2{position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(232,84,122,.2) 0%,transparent 70%);bottom:-120px;left:-60px;border-radius:50%;}
+.c-inner{position:relative;z-index:2;}
+.c-eye{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:16px;}
+.c-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,60px);font-weight:500;font-style:italic;color:#fff;margin-bottom:14px;}
+.c-sub{font-size:15px;color:rgba(255,255,255,.45);margin-bottom:44px;}
+.c-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.c-btn{display:inline-flex;align-items:center;gap:10px;padding:15px 36px;background:#fff;border-radius:100px;color:var(--text);font-size:13px;font-weight:500;letter-spacing:.08em;border:none;cursor:pointer;transition:all .35s;}
+.c-btn:hover{background:var(--indigo);color:#fff;transform:translateY(-2px);box-shadow:0 12px 40px rgba(74,92,240,.4);}
+.c-btn-ghost{background:transparent;border:1.5px solid rgba(255,255,255,.25);color:#fff;}
+.c-btn-ghost:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);transform:translateY(-2px);}
+.c-btn-resume{background:linear-gradient(135deg,#9272ed,#7146d4);color:#fff;}
+.c-btn-resume:hover{background:linear-gradient(135deg,#a084f1,#8055dc);}
+
+footer{padding:28px 64px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);font-size:12px;color:var(--muted);letter-spacing:.07em;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.1s;} .reveal-d2{transition-delay:.2s;} .reveal-d3{transition-delay:.3s;}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+@keyframes floatOrb{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-30px) scale(1.05);}}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(74,92,240,.3);border-radius:4px;}
+
+/* PURPLE / BLACK / WHITE TECH SYSTEM */
+body{background:var(--bg);}
+nav{padding-top:24px;padding-bottom:24px;}
+.nav-logo{color:#fff;font-family:'Outfit',sans-serif;font-weight:600;letter-spacing:-.02em;}
+.nav-links a{color:rgba(255,255,255,.60);}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.nav-cta{background:linear-gradient(135deg,#6285ff,#7c3cff);box-shadow:0 10px 30px rgba(102,74,255,.25);}
+nav.scrolled{background:rgba(249,248,252,.90);border-bottom:1px solid rgba(37,24,66,.08);box-shadow:0 8px 30px rgba(24,15,47,.06);}
+nav.scrolled .nav-logo{color:var(--text);}
+nav.scrolled .nav-links a{color:var(--muted);}
+nav.scrolled .nav-links a:hover,nav.scrolled .nav-links a.active{color:var(--indigo);}
+nav.scrolled .nav-cta{color:#fff!important;}
+
+.hero{max-width:none;min-height:100vh;padding-left:max(64px,calc((100vw - 1240px)/2 + 64px));padding-right:max(64px,calc((100vw - 1240px)/2 + 64px));gap:72px;background:
+  radial-gradient(circle at 82% 26%,rgba(105,72,255,.26),transparent 25%),
+  radial-gradient(circle at 18% 72%,rgba(63,111,255,.14),transparent 29%),
+  linear-gradient(135deg,#050712 0%,#09081a 48%,#0d0921 100%);color:#fff;isolation:isolate;}
+.hero::before{content:'';position:absolute;inset:0;z-index:-1;opacity:.22;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,transparent,black 22%,black 80%,transparent);}
+.hero::after{content:'';position:absolute;left:-8%;right:-8%;bottom:7%;height:220px;z-index:-1;opacity:.45;background:radial-gradient(ellipse at center,rgba(118,73,255,.34),transparent 62%);filter:blur(35px);transform:rotate(-4deg);}
+.hero-orb1{background:radial-gradient(circle,rgba(128,79,255,.20),transparent 66%);}
+.hero-orb2{background:radial-gradient(circle,rgba(73,104,255,.13),transparent 66%);}
+.hero-orb3{background:radial-gradient(circle,rgba(153,98,255,.10),transparent 66%);}
+.h-badge{background:rgba(255,255,255,.055);border:1px solid rgba(159,135,255,.22);color:#bcaaff;backdrop-filter:blur(16px);}
+.h-dot{background:#9577ff;box-shadow:0 0 18px #8c6fff;}
+.h-name{font-family:'Outfit',sans-serif;font-size:clamp(54px,5.2vw,78px);font-weight:600;line-height:1.08;letter-spacing:-.055em;color:#f8f6ff;}
+.h-name em{font-style:normal;background:linear-gradient(100deg,#ffffff 0%,#9ca9ff 46%,#a56dff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.h-cn{font-family:'Outfit','Noto Serif SC',sans-serif;font-size:18px;font-weight:500;letter-spacing:.04em;color:rgba(255,255,255,.82);margin-top:20px;}
+.h-summary{background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.10);border-left:2px solid #8b6dff;color:rgba(244,241,255,.68);box-shadow:none;backdrop-filter:blur(18px);}
+.h-summary strong{color:#b9a9ff;}
+.btn-primary{border-radius:12px;background:linear-gradient(135deg,#5795ff 0%,#743cff 100%);box-shadow:0 14px 32px rgba(101,63,255,.28);}
+.btn-primary:hover{background:linear-gradient(135deg,#6aa1ff,#8a52ff);box-shadow:0 18px 40px rgba(101,63,255,.38);}
+.btn-outline{border-radius:12px;border-color:rgba(255,255,255,.20);color:#fff;background:rgba(255,255,255,.025);}
+.btn-outline:hover{border-color:#9d86ff;color:#c5b8ff;background:rgba(124,84,255,.08);}
+
+.id-panel{padding:0 34px 30px;background:linear-gradient(145deg,rgba(20,22,48,.92),rgba(12,10,31,.82));border:1px solid rgba(174,155,255,.22);border-radius:28px;box-shadow:0 35px 100px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(24px);}
+.id-panel::before{height:1px;background:linear-gradient(90deg,transparent,#9f83ff,#587dff,transparent);}
+.id-avatar{width:calc(100% + 68px);height:320px;margin:0 0 26px -34px;border:0;border-radius:28px 28px 18px 18px;background:#10152c;box-shadow:none;}
+.id-avatar img{object-position:50% 25%;}
+.id-name-en{font-family:'Outfit',sans-serif;font-size:25px;color:#fff;letter-spacing:-.02em;}
+.id-name-cn{color:rgba(255,255,255,.48);}
+.id-info-item,.id-chip{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.055);}
+.id-info-label{color:rgba(255,255,255,.40);}
+.id-info-val{color:#f6f4ff;}
+.id-chip{color:rgba(255,255,255,.70);}
+.id-chip:hover{background:rgba(124,86,255,.16);border-color:rgba(151,126,255,.25);color:#c7b9ff;}
+.id-divider{background:rgba(255,255,255,.09);}
+.id-contact-item{color:rgba(255,255,255,.63);}
+.id-contact-icon{background:rgba(125,89,255,.14);color:#b7a4ff;}
+
+.bg-w#intent{background:#fbfaff;border-bottom:1px solid rgba(45,29,78,.07);}
+.sec-title{font-family:'Outfit','Noto Serif SC',sans-serif;font-weight:500;letter-spacing:-.035em;}
+.eyebrow{color:#7657ed;}
+.eyebrow-line{background:linear-gradient(90deg,#527eff,#8d54ff);}
+.intent-card{border-color:rgba(48,31,81,.08);box-shadow:0 14px 45px rgba(37,23,67,.05);}
+.intent-card::before{background:linear-gradient(145deg,rgba(123,88,255,.10),transparent 62%);}
+.intent-card:hover{border-color:rgba(118,84,240,.22);box-shadow:0 20px 55px rgba(61,36,111,.11);}
+.intent-icon{filter:grayscale(1);opacity:.72;}
+
+.impact-intro{position:relative;margin:-96px 0 72px;padding:96px 0 72px;color:#fff;background:linear-gradient(135deg,#080916,#0e0a20);box-shadow:0 0 0 100vmax #0a0919;clip-path:inset(0 -100vmax);}
+.impact-intro::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 75% 0,rgba(115,70,255,.19),transparent 34%),linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:auto,56px 56px,56px 56px;}
+.impact-intro>*{position:relative;z-index:1;}
+.impact-intro .eyebrow{color:#9c83ff;}
+.impact-intro .sec-title{color:#fff;}
+.impact-intro .stats-row{gap:14px;background:transparent;margin-bottom:0;}
+.impact-intro .stat-card{background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.09);border-radius:16px;text-align:left;padding:30px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
+.impact-intro .stat-card:hover{background:rgba(120,83,255,.12);border-color:rgba(157,130,255,.25);transform:translateY(-4px);}
+.impact-intro .stat-num{font-family:'Outfit',sans-serif;font-weight:500;color:#fff;background:linear-gradient(110deg,#fff,#9476ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.impact-intro .stat-label{color:rgba(255,255,255,.54);}
+
+.proj-card{border-color:rgba(51,31,85,.09);box-shadow:0 12px 42px rgba(41,24,72,.05);}
+.proj-card:hover{box-shadow:0 24px 65px rgba(48,28,88,.11);border-color:rgba(118,84,240,.20);}
+.proj-header{position:relative;}
+.proj-header::before{content:'';position:absolute;left:0;top:18px;bottom:18px;width:2px;background:linear-gradient(#557fff,#945cff);transform:scaleY(0);transition:transform .35s;}
+.proj-card:hover .proj-header::before,.proj-card.open .proj-header::before{transform:scaleY(1);}
+.proj-title{font-family:'Outfit','Noto Serif SC',sans-serif;font-weight:500;letter-spacing:-.015em;}
+.proj-num{color:rgba(112,76,222,.13);}
+.proj-result{background:linear-gradient(145deg,#f1edff,#f8f6ff);border:1px solid rgba(118,84,240,.10);}
+.tag,.proj-pill{background:#f3f0f8;color:#655d72;}
+.ti,.tr,.ta,.ts{background:#f0ecff;color:#7657ed;}
+
+.traits-grid,.method-grid,.method-grid-2{gap:20px;}
+.trait-card,.m-card,.tool-tag{border-color:rgba(50,31,84,.08);box-shadow:0 10px 36px rgba(43,25,76,.04);}
+.trait-card:hover,.m-card:hover,.tool-tag:hover{border-color:rgba(118,84,240,.20);box-shadow:0 20px 52px rgba(48,28,88,.10);}
+.tc-i::after,.tc-r::after,.tc-a::after,.tc-s::after{background:linear-gradient(90deg,#527eff,#9458ff);}
+.ic-i,.ic-r,.ic-a,.ic-s{background:#f0edff;}
+.skill-fill{background:linear-gradient(90deg,#557fff,#8c52ff);}
+.m-num{color:rgba(115,77,230,.14);}
+
+.contact-wrap{background:linear-gradient(135deg,#070814 0%,#100a24 100%);border:1px solid rgba(143,111,255,.18);box-shadow:0 35px 90px rgba(29,15,59,.20);}
+.c-orb1{background:radial-gradient(circle,rgba(108,75,255,.34),transparent 70%);}
+.c-orb2{background:radial-gradient(circle,rgba(70,112,255,.22),transparent 70%);}
+.c-btn{border-radius:12px;}
+.c-btn:hover{background:#7957ef;}
+
+@media(max-width:900px){
+  .hero{padding-left:24px;padding-right:24px;}
+  .id-avatar{height:360px;}
+  .impact-intro{margin:-70px 0 58px;padding:70px 0 58px;}
+  .impact-intro .stat-card{text-align:center;padding:24px 16px;}
+}
+
+@media(max-width:900px){
+  nav{padding:16px 24px;} .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;padding:100px 24px 60px;gap:40px;}
+  section{padding:70px 24px;} .bg-inner{padding:0 24px;}
+  .intent-bar,.stats-row,.achieve-grid,.traits-grid,.pers-grid,.method-grid,.hobby-grid{grid-template-columns:1fr 1fr;}
+  .proj-details{grid-template-columns:1fr;}
+  .method-grid-2,.skills-wrap{grid-template-columns:1fr;}
+  .proj-body-inner{grid-template-columns:1fr;}
+  .contact-wrap{margin:0 20px 60px;padding:48px 24px;}
+  footer{flex-direction:column;gap:10px;text-align:center;}
+}
+@media(max-width:560px){
+  .tools-grid,.language-grid{grid-template-columns:1fr;}
+  .h-name{font-size:45px;}
+  .id-avatar{height:300px;}
+  .intent-bar,.stats-row,.traits-grid,.method-grid,.hobby-grid{grid-template-columns:1fr;}
+  .proj-header{grid-template-columns:42px 1fr;gap:14px;padding:24px 20px;}
+  .proj-header>div:last-child{grid-column:2;justify-content:flex-start!important;}
+  .proj-body-inner{padding:0 20px 24px;}
+}
+@media(pointer:coarse){
+  body{cursor:auto;}
+  #cur,#cur-r{display:none;}
+}
+a:focus-visible,button:focus-visible,.proj-header:focus-visible{outline:2px solid #9e86ff;outline-offset:4px;}
+
+/* CONTINUOUS HERO + PROJECT STAGE */
+nav{top:24px;left:28px;right:28px;padding:12px max(60px,calc((100vw - 1240px)/2));min-height:64px;}
+nav.scrolled{top:0;left:0;right:0;padding:14px 64px;}
+.nav-logo{line-height:1;}
+.nav-links{align-items:center;}
+.nav-links a{display:inline-flex;align-items:center;min-height:34px;line-height:1;}
+.nav-cta{min-height:38px;}
+.hero{width:calc(100% - 56px);margin:24px 28px 0;padding:108px max(60px,calc((100vw - 1240px)/2)) 34px;min-height:calc(100vh - 24px);grid-template-columns:1.02fr .98fr;grid-template-rows:auto auto;align-items:center;border-radius:32px 32px 0 0;background:
+  radial-gradient(circle at 88% 34%,rgba(89,79,255,.31),transparent 24%),
+  radial-gradient(circle at 14% 72%,rgba(64,106,255,.15),transparent 30%),
+  linear-gradient(135deg,#050713 0%,#080919 48%,#0d0922 100%);}
+.hero-left{max-width:610px;}
+.h-badge{margin-bottom:18px;padding:5px 13px;font-size:9.5px;}
+.h-name{font-size:clamp(50px,4.7vw,72px);}
+.h-cn{margin-top:18px;}
+.h-summary{max-width:590px;margin-top:20px;padding:0;background:transparent;border:0;backdrop-filter:none;font-size:13px;line-height:1.9;color:rgba(244,241,255,.62);}
+.h-actions{margin-top:22px;}
+.hero-right{width:min(100%,500px);justify-self:end;}
+.id-panel{height:480px;padding:0;border-radius:24px;overflow:visible;background:linear-gradient(145deg,rgba(21,25,54,.94),rgba(12,11,33,.90));}
+.id-panel::before{height:100%;border-radius:inherit;background:linear-gradient(145deg,rgba(157,136,255,.35),transparent 38%,rgba(82,120,255,.20));padding:1px;pointer-events:none;}
+.id-avatar{width:100%;height:100%;margin:0;border-radius:24px;overflow:hidden;}
+.id-avatar img{object-fit:cover;object-position:50% 17%;}
+.profile-signals{position:absolute;left:-92px;top:130px;display:flex;flex-direction:column;gap:11px;z-index:3;}
+.profile-signal{min-width:190px;display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid rgba(159,139,255,.18);border-radius:11px;background:rgba(8,12,29,.72);box-shadow:0 16px 40px rgba(0,0,0,.24);backdrop-filter:blur(16px);color:rgba(255,255,255,.78);font-size:12px;}
+.profile-signal span:first-child{display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:rgba(117,87,255,.14);color:#9e87ff;font-size:15px;}
+.hero-metrics{grid-column:1/-1;width:100%;margin-top:34px;position:relative;z-index:2;}
+.hero-metrics .stats-row{gap:14px;margin:0;background:transparent;}
+.hero-metrics .stat-card{padding:25px 26px;text-align:left;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
+.hero-metrics .stat-card:hover{transform:translateY(-4px);background:rgba(119,81,255,.13);border-color:rgba(159,132,255,.25);}
+.hero-metrics .stat-num{font-family:'Outfit',sans-serif;font-size:40px;color:#fff;background:linear-gradient(110deg,#fff,#9b7cff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-metrics .stat-label{color:rgba(255,255,255,.52);}
+
+#work{width:calc(100% - 56px);max-width:none;margin:0 28px 24px;padding:66px max(60px,calc((100vw - 1240px)/2)) 100px;border-radius:0 0 32px 32px;position:relative;overflow:hidden;color:#fff;background:
+  radial-gradient(circle at 78% 10%,rgba(111,68,255,.15),transparent 27%),
+  linear-gradient(135deg,#050713 0%,#080919 50%,#0d0922 100%);}
+#work::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:58px 58px;mask-image:linear-gradient(to bottom,black,transparent 72%);}
+#work>*{position:relative;z-index:1;}
+#work .eyebrow{color:#9c84ff;}
+#work .sec-title{color:#fff;}
+#work .proj-card{background:linear-gradient(145deg,rgba(255,255,255,.066),rgba(255,255,255,.024));border-color:rgba(255,255,255,.09);box-shadow:0 20px 60px rgba(0,0,0,.14);}
+#work .proj-card:hover{border-color:rgba(158,130,255,.27);box-shadow:0 26px 70px rgba(0,0,0,.24);}
+#work .proj-header:hover{background:rgba(125,87,255,.055);}
+#work .proj-title{color:#fff;}
+#work .proj-sub,#work .proj-desc{color:rgba(242,239,255,.58);}
+#work .proj-num{color:rgba(173,151,255,.18);}
+#work .proj-toggle{background:rgba(255,255,255,.07);color:rgba(255,255,255,.70);}
+#work .proj-card.open .proj-toggle{background:linear-gradient(135deg,#6483ff,#7b45f4);color:#fff;}
+#work .tag,#work .proj-pill{background:rgba(148,117,255,.10);border:1px solid rgba(158,132,255,.12);color:#bbaaff;}
+#work .proj-result{background:linear-gradient(145deg,rgba(116,80,255,.16),rgba(73,89,181,.09));border-color:rgba(157,132,255,.17);}
+#work .result-label,#work .result-val{color:#bdaeff;}
+
+.bg-w#intent{background:linear-gradient(180deg,#f7f5fc 0%,#fbfaff 100%);}
+
+@media(max-width:900px){
+  nav{top:12px;left:12px;right:12px;padding:10px 16px;min-height:56px;}
+  nav.scrolled{top:0;left:0;right:0;padding:12px 24px;}
+  .hero{width:calc(100% - 24px);margin:12px 12px 0;padding:100px 28px 32px;grid-template-columns:1fr;grid-template-rows:auto;border-radius:24px 24px 0 0;}
+  .hero-left{max-width:none;}
+  .hero-right{width:100%;max-width:560px;justify-self:center;}
+  .id-panel{height:560px;}
+  .profile-signals{left:18px;top:auto;bottom:24px;}
+  .hero-metrics{grid-column:1;margin-top:8px;}
+  .hero-metrics .stats-row{grid-template-columns:1fr 1fr;}
+  #work{width:calc(100% - 24px);margin:0 12px 12px;padding:60px 28px 76px;border-radius:0 0 24px 24px;}
+}
+@media(max-width:560px){
+  .hero{padding:90px 20px 24px;}
+  .id-panel{height:420px;}
+  .profile-signals{left:12px;right:12px;bottom:14px;gap:7px;}
+  .profile-signal{min-width:0;padding:9px 12px;font-size:11px;}
+  .hero-metrics .stats-row{grid-template-columns:1fr 1fr;gap:8px;}
+  .hero-metrics .stat-card{padding:20px 16px;text-align:center;}
+  .hero-metrics .stat-num{font-size:34px;}
+  #work{padding:52px 20px 64px;}
+}
+
+/* WHITE PORTRAIT EDITION — pearl, aubergine and warm graphite */
+:root{
+  --bg:#f5f3f0;
+  --bg2:#ece8e4;
+  --text:#19151d;
+  --text2:#514951;
+  --muted:#8b8288;
+  --indigo:#7957e6;
+  --indigo-l:#f0ebfa;
+  --indigo-m:rgba(121,87,230,.15);
+  --border:rgba(70,54,70,.10);
+}
+.hero{background:
+  radial-gradient(circle at 87% 33%,rgba(128,86,235,.26),transparent 25%),
+  radial-gradient(circle at 16% 74%,rgba(120,88,70,.10),transparent 31%),
+  linear-gradient(135deg,#07070f 0%,#0b0915 49%,#130c1d 100%);}
+.hero::after{background:radial-gradient(ellipse at center,rgba(125,80,225,.26),transparent 64%);}
+.hero-orb1{background:radial-gradient(circle,rgba(139,92,235,.17),transparent 66%);}
+.hero-orb2{background:radial-gradient(circle,rgba(142,109,92,.08),transparent 66%);}
+.btn-primary,.nav-cta{background:linear-gradient(135deg,#8e70ef 0%,#6f43d4 100%);}
+.btn-primary:hover{background:linear-gradient(135deg,#9c83f3,#7f52dd);}
+.h-name em{background:linear-gradient(100deg,#fff 0%,#d9cef6 48%,#a98aeb 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.h-summary strong{color:#c2b0ed;}
+.id-panel{background:#eeece9;border-color:rgba(255,255,255,.38);box-shadow:0 35px 100px rgba(0,0,0,.38),0 0 0 1px rgba(143,111,206,.12);}
+.id-panel::before{background:linear-gradient(145deg,rgba(255,255,255,.36),transparent 42%,rgba(119,81,197,.10));opacity:.55;}
+.id-avatar{background:#eeece9;padding:18px;}
+.id-avatar img{object-position:50% 20%;transform:scale(.9);transform-origin:50% 32%;border-radius:18px;}
+@media(max-width:900px){
+  .id-avatar{padding:14px;}
+  .id-avatar img{transform:scale(.92);}
+}
+.profile-signal{background:rgba(13,11,23,.76);border-color:rgba(199,181,235,.18);color:rgba(255,255,255,.82);}
+.profile-signal span:first-child{background:rgba(133,96,215,.17);color:#c0abec;}
+.hero-metrics .stat-card{background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.022));}
+.hero-metrics .stat-num{background:linear-gradient(110deg,#fff,#b59ce9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+#work{background:
+  radial-gradient(circle at 78% 10%,rgba(126,82,221,.14),transparent 28%),
+  linear-gradient(135deg,#07070f 0%,#0b0915 50%,#130c1d 100%);}
+#work .proj-card.open .proj-toggle{background:linear-gradient(135deg,#9578e8,#7044cf);}
+#work .proj-result{background:linear-gradient(145deg,rgba(132,91,218,.15),rgba(98,75,126,.08));}
+.bg-w#intent,.bg-w{background:#f8f6f3;}
+.intent-card,.trait-card,.m-card,.tool-tag,.language-card,.proj-card{background:#fffefa;}
+.contact-wrap{background:linear-gradient(135deg,#080810 0%,#160d21 100%);}
+.c-orb1{background:radial-gradient(circle,rgba(132,89,225,.30),transparent 70%);}
+.c-orb2{background:radial-gradient(circle,rgba(130,96,78,.14),transparent 70%);}
+
+/* GENERAL PM EDITION — the current layout in the original editorial palette */
+.nav-logo{font-family:'Playfair Display',serif;font-weight:600;letter-spacing:.01em;color:var(--text);}
+.nav-links a{color:#746d75;}
+.nav-links a:hover,.nav-links a.active{color:#6848c6;}
+.sec-title{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:500;letter-spacing:-.02em;}
+.hero{min-height:780px;border-radius:32px;color:var(--text);box-shadow:inset 0 0 0 1px rgba(70,54,70,.075);background:
+  radial-gradient(circle at 87% 28%,rgba(116,79,211,.105),transparent 27%),
+  radial-gradient(circle at 18% 78%,rgba(99,171,148,.055),transparent 30%),
+  linear-gradient(135deg,#fffefa 0%,#fbf9fc 54%,#f4f0fa 100%);}
+.hero::before{opacity:.30;background-image:linear-gradient(rgba(91,65,133,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(91,65,133,.035) 1px,transparent 1px);background-size:72px 72px;}
+.hero::after{opacity:.20;height:170px;background:radial-gradient(ellipse at center,rgba(126,87,205,.16),transparent 67%);}
+.hero-orb1{background:radial-gradient(circle,rgba(137,102,210,.075),transparent 68%);}
+.hero-orb2{background:radial-gradient(circle,rgba(82,155,132,.045),transparent 68%);}
+.hero-orb3{background:radial-gradient(circle,rgba(125,93,185,.035),transparent 68%);}
+.h-badge{background:#edf7f3;border-color:#cfe7df;color:#438f7a;backdrop-filter:none;}
+.h-dot{background:#68b39e;box-shadow:0 0 0 4px rgba(104,179,158,.10);}
+.h-name{font-family:'Playfair Display','Noto Serif SC',serif;font-weight:500;letter-spacing:-.035em;line-height:1.04;color:var(--text);}
+.h-name em{font-style:italic;background:linear-gradient(100deg,#6650d8 0%,#7658df 52%,#9a72df 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.h-cn{color:#746d75;}
+.h-summary{color:#625a62;}
+.h-summary strong{color:#664bc3;}
+.btn-primary,.nav-cta{background:linear-gradient(135deg,#8769df,#6840bd);box-shadow:0 12px 30px rgba(91,58,155,.24);}
+.btn-primary:hover{background:linear-gradient(135deg,#967be5,#7850c8);}
+.btn-outline{border-color:rgba(68,51,70,.16);color:#443b45;background:rgba(255,255,255,.52);}
+.btn-outline:hover{border-color:#7957e6;color:#6848c6;background:#f3eefb;}
+.id-panel{background:#f2efec;border-color:rgba(89,63,104,.10);box-shadow:0 30px 80px rgba(62,45,67,.15),0 0 0 1px rgba(121,87,230,.06);}
+.id-avatar{background:#f2efec;}
+.profile-signal{background:rgba(255,254,250,.92);border-color:rgba(89,63,104,.10);color:#514951;box-shadow:0 14px 34px rgba(62,45,67,.11);}
+.profile-signal span:first-child{background:#eee8f8;color:#7152ca;}
+.hero-metrics .stat-card{background:rgba(255,254,250,.82);border-color:rgba(70,54,70,.085);box-shadow:0 12px 32px rgba(62,45,67,.055);}
+.hero-metrics .stat-card:hover{background:#fff;border-color:rgba(121,87,230,.18);box-shadow:0 18px 42px rgba(62,45,67,.09);}
+.hero-metrics .stat-num{background:linear-gradient(110deg,#29212c,#7759d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-metrics .stat-label{color:#827982;}
+
+#work{margin:24px 28px;padding-top:82px;border-radius:32px;color:var(--text);background:#f8f6f3;box-shadow:inset 0 0 0 1px rgba(75,57,72,.055);}
+#work::before{opacity:0;}
+#work .eyebrow{color:#7354c7;}
+#work .sec-title,#work .proj-title{color:var(--text);}
+#work .proj-card{background:#fffefa;border-color:rgba(67,49,68,.085);box-shadow:0 14px 46px rgba(47,31,50,.055);}
+#work .proj-card:hover{border-color:rgba(114,79,184,.18);box-shadow:0 24px 62px rgba(55,36,61,.10);}
+#work .proj-header:hover{background:rgba(114,79,184,.035);}
+#work .proj-sub,#work .proj-desc{color:var(--muted);}
+#work .proj-num{color:rgba(103,72,165,.14);}
+#work .proj-toggle{background:#f2eef6;color:#7354c7;}
+#work .proj-card.open .proj-toggle{background:#7354c7;color:#fff;}
+#work .tag,#work .proj-pill{background:#f2eef6;border-color:rgba(108,76,173,.09);color:#68548d;}
+#work .project-stage{background:#eee8f6;border-color:rgba(108,76,173,.11);color:#7055a8;}
+#work .proj-result{background:linear-gradient(145deg,#f1ecf8,#fbf9fc);border-color:rgba(110,79,176,.11);}
+#work .result-label,#work .result-val{color:#7255bd;}
+#work .result-icon{color:#9279c6;background:radial-gradient(circle at 30% 20%,rgba(138,104,207,.13),rgba(118,81,197,.025));}
+#work .result-cue{background:#eee9f5;border-color:rgba(108,76,173,.10);color:#705e91;}
+
+@media(max-width:900px){.practice-grid,.principle-grid,.ai-proof-grid{grid-template-columns:1fr;}.ai-eval-strip{grid-template-columns:1fr 1fr;}.ai-proof-section{padding-top:56px;padding-bottom:56px;}}
+@media(max-width:900px){.hero{min-height:auto;border-radius:24px;}.h-name{line-height:1.08;}#work{margin:12px;padding-top:60px;border-radius:24px;}}
+@media(max-width:560px){.practice-card,.principle-card,.ai-proof-card{padding:22px 20px;}.skill-row{flex-direction:column;gap:4px}.skill-name,.skill-usage{max-width:none;flex:auto;text-align:left;}}
+@media(max-width:560px){.ai-eval-strip{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Nora D.</a>
+  <ul class="nav-links">
+    <li><a href="#work">项目经历</a></li>
+    <li><a href="#skills">技能工具</a></li>
+    <li><a href="#education">工作履历</a></li>
+    <li><a href="#about">关于我</a></li>
+    <li><a href="#contact" class="nav-cta">联系我</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-orb1"></div>
+  <div class="hero-orb2"></div>
+  <div class="hero-orb3"></div>
+
+  <div class="hero-left">
+    <div class="h-badge"><div class="h-dot"></div>产品经理</div>
+    <h1 class="h-name">让复杂需求，<br><em>成为可落地的产品。</em></h1>
+    <div class="h-cn">Nora Dong · 董宁</div>
+
+    <div class="h-summary">
+      计算机与电子信息双背景的<strong>产品经理</strong>，具备智能设备 SaaS、平台型产品、ToB 复杂业务与 ToC 应用实践。擅长从用户任务和业务目标出发，将分散需求抽象为<strong>可配置、可复用的产品能力</strong>，完整覆盖调研、方案、PRD/原型、评审验收、数据分析与迭代，并在全球化、多语言和软硬件约束下推进交付。
+    </div>
+
+    <div class="h-actions">
+      <button class="btn-primary" onclick="copyEmail()">✉ 联系我</button>
+      <a href="#work" class="btn-outline">查看项目经历 →</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="id-panel">
+      <div class="id-avatar">
+        <img src="assets/nora-profile-white-full.jpg" alt="董宁 Nora Dong 的白色礼服职业照片">
+      </div>
+      <div class="profile-signals">
+        <div class="profile-signal"><span>◇</span><span>产品经理</span></div>
+        <div class="profile-signal"><span>▧</span><span>计算机 × 电子信息</span></div>
+        <div class="profile-signal"><span>⌖</span><span>深圳</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-metrics">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">4</div>
+        <div class="stat-label">新平台核心模块</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">6</div>
+        <div class="stat-label">连续FT版本交付</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100<span class="stat-sup">+</span></div>
+        <div class="stat-label">平台设备问题闭环</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5</div>
+        <div class="stat-label">代表性产品实践</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <!-- Projects accordion -->
+  <div class="eyebrow reveal" style="margin-bottom:12px;"><div class="eyebrow-line"></div>Selected Impact · 代表项目</div>
+  <h2 class="sec-title reveal" style="margin-bottom:34px;">五类可迁移的产品能力</h2>
+
+  <div class="proj-list">
+    <div class="proj-card reveal" id="p1">
+      <div class="proj-header" onclick="toggleProj('p1')">
+        <div class="proj-num">01</div>
+        <div>
+          <div class="proj-title">多应用合并 · 统一平台入口</div>
+          <div class="proj-sub">平台架构 · FT/PT/SBS 多业务整合</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="tag ti" style="margin:0;">平台架构</div>
+          <div class="proj-toggle">+</div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-body-inner">
+          <div>
+            <div class="proj-desc">打破 FT/PT/SBS 多业务孤岛，重构"九宫格"为应用选择器，将用户配置、权限中心等6大系统级配置从业务层抽离，建立 General Setting 统一管控，消除跨业务配置冲突。协调 FT、中台、人因、运维等多职能部门完成专项评审，完成功能权限、数据权限及配置体系的深度梳理。</div>
+            <div class="proj-pills">
+              <div class="proj-pill">跨职能需求对齐</div>
+              <div class="proj-pill">导航入口重构</div>
+              <div class="proj-pill">系统设置分层管理</div>
+              <div class="proj-pill">标准底座建立</div>
+              <div class="proj-pill">架构解耦</div>
+            </div>
+          </div>
+          <div class="proj-result">
+            <div class="result-label">核心成果</div>
+            <div class="result-val">奠定 FT/PT/SBS<br>规模化合并底座<br><span style="font-size:14px;opacity:.7;">大幅降低系统维护成本</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal" id="p2">
+      <div class="proj-header" onclick="toggleProj('p2')">
+        <div class="proj-num">02</div>
+        <div>
+          <div class="proj-title">AddSecure · 配置化安全看板</div>
+          <div class="proj-sub">欧洲战略客户方案 · 60,000+ 台车辆场景</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="tag tr" style="margin:0;">客户定制</div>
+          <div class="proj-toggle">+</div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-body-inner">
+          <div>
+            <div class="proj-desc">独立对接欧洲战略客户，面向60,000+台车辆场景拆解安全运营任务。重构安全评分、等级区间、配置化看板与事件收藏，分析 Samsara、Wialon、Netradyne 等竞品，并承接30+项需求的方案设计、评审与发布，将客户策略沉淀为平台可配置能力。</div>
+            <div class="proj-pills">
+              <div class="proj-pill">安全评分重构</div>
+              <div class="proj-pill">模块化配置看板</div>
+              <div class="proj-pill">三大竞品分析</div>
+              <div class="proj-pill">报警收藏功能</div>
+              <div class="proj-pill">已部署上线</div>
+            </div>
+          </div>
+          <div class="proj-result">
+            <div class="result-label">服务规模</div>
+            <div class="result-val">60,000+<br><span style="font-size:16px;">台车辆场景</span><br><span style="font-size:13px;opacity:.7;">30+ 项需求设计与发布</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal" id="p3">
+      <div class="proj-header" onclick="toggleProj('p3')">
+        <div class="proj-num">03</div>
+        <div>
+          <div class="proj-title">日本歌乐 FMS · PC 端系统</div>
+          <div class="proj-sub">国际项目 · 日本最大商用车经销商</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="tag ta" style="margin:0;">国际项目</div>
+          <div class="proj-toggle">+</div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-body-inner">
+          <div>
+            <div class="proj-desc">客户为日本最大商用车经销商，已具备成熟FMS使用基础。将客户全日语Excel资料逐条翻译并模块化整理拆解，处理50+页日文资料、拆析30+关键需求；组织多轮需求澄清会议，建立"疑问点清单"逐项确认，组织参与评审/客户沟通会议10+次、参会时长15h+；与客户邮件沟通敲定需求疑问点60+项，独立输出57页PC原型与2.5万字深度PRD，通过逻辑图示降低研发歧义，按时高质量交付。</div>
+            <div class="proj-pills">
+              <div class="proj-pill">全日语资料结构化</div>
+              <div class="proj-pill">PC原型 57页</div>
+              <div class="proj-pill">PRD 2.5万字</div>
+              <div class="proj-pill">60+疑问点逐条闭环</div>
+              <div class="proj-pill">10+次评审会议</div>
+            </div>
+          </div>
+          <div class="proj-result">
+            <div class="result-label">文档交付</div>
+            <div class="result-val">2.5万字<br><span style="font-size:16px;">PRD + 57页原型</span><br><span style="font-size:13px;opacity:.7;">中心立项级项目</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal" id="p4">
+      <div class="proj-header" onclick="toggleProj('p4')">
+        <div class="proj-num">04</div>
+        <div>
+          <div class="proj-title">AI小参 · 企业知识助手</div>
+          <div class="proj-sub">RAG · 角色化知识库 · 语料治理</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="tag ts" style="margin:0;">RAG 产品</div>
+          <div class="proj-toggle">+</div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-body-inner">
+          <div>
+            <div class="proj-desc">参与企业内部知识助手的产品优化，围绕不同岗位的知识边界、权限和回答口径拆分角色化知识库，参与语料治理与效果优化。该项目形成了对 RAG 产品的基础认知：知识并非越多越好，检索质量、权限正确性、答案依据和持续评测共同决定最终体验。</div>
+            <div class="proj-pills">
+              <div class="proj-pill">RAG知识库</div>
+              <div class="proj-pill">角色权限</div>
+              <div class="proj-pill">语料治理</div>
+              <div class="proj-pill">效果评测</div>
+              <div class="proj-pill">用户反馈</div>
+            </div>
+          </div>
+          <div class="proj-result">
+            <div class="result-label">核心能力</div>
+            <div class="result-val">业务知识<br>→ 可检索AI能力<br><span style="font-size:14px;opacity:.7;">知识边界 · 权限 · 评测</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal" id="p5">
+      <div class="proj-header" onclick="toggleProj('p5')">
+        <div class="proj-num">05</div>
+        <div>
+          <div class="proj-title">P100 · 异构设备接入 FT-Cloud</div>
+          <div class="proj-sub">统一平台入口 · 老旧设备兼容 · 大规模迁移</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="tag ta" style="margin:0;">平台集成</div>
+          <div class="proj-toggle">+</div>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-body-inner">
+          <div>
+            <div class="proj-desc">负责 P100 接入 FT-Cloud 的完整产品方案与需求设计。面对第三方设备无协议、无操作文档、交互机制未知且只能在海外上线等限制，从零建立验证路径：协调 IT 开通海外域名与端口，拉通客户、技术支持、研发和测试完成远程操作与联调，逐步验证设备通信和平台功能。最终完成全部预设功能集成，覆盖 AddSecure 客户 1W+ 台设备场景，并形成 ARR 50 万+美元的额外收益。</div>
+            <div class="proj-pills"><div class="proj-pill">异构设备接入</div><div class="proj-pill">统一入口·差异化能力</div><div class="proj-pill">异步视频流程</div><div class="proj-pill">能力门控</div><div class="proj-pill">ARR 50万+美元</div></div>
+          </div>
+          <div class="proj-result"><div class="result-label">业务成果</div><div class="result-val">已集成完毕<br><span style="font-size:14px;opacity:.7;">ARR 50万+美元额外收益</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CROSS-INDUSTRY PRACTICE -->
+<section id="cross-industry">
+  <div class="eyebrow reveal"><div class="eyebrow-line"></div>Earlier Practice · 跨行业实践</div>
+  <h2 class="sec-title reveal">把产品能力迁移到不同业务场景</h2>
+  <div class="practice-grid">
+    <article class="practice-card reveal">
+      <div class="practice-kicker">0 → 1 · 企业数字化</div><div class="practice-title">损溢系统</div>
+      <div class="practice-desc">梳理门店、区域与后台角色流程，负责16个前后台页面原型与PRD，协调跨系统数据、评审、联调与上线。</div>
+      <div class="practice-result"><strong>约 80%</strong><br>系统使用率提升</div>
+    </article>
+    <article class="practice-card reveal">
+      <div class="practice-kicker">ToC / B2B · 数据增长</div><div class="practice-title">促销助手与 B2B 商城</div>
+      <div class="practice-desc">将一线反馈转化为多角色切换、活动埋点、商品分类和运营入口方案，形成问题定位、方案设计与数据验证闭环。</div>
+      <div class="practice-result"><strong>PV +35%</strong><br>WV +28%</div>
+    </article>
+    <article class="practice-card reveal">
+      <div class="practice-kicker">ToB · 用户研究</div><div class="practice-title">在线考试与招聘产品</div>
+      <div class="practice-desc">访谈企业用户并分析6款竞品，将角色、任务和痛点转化为流程、原型与PRD，跟进评审、研发、测试、验收至上线。</div>
+      <div class="practice-result"><strong>6 款</strong><br>竞品与完整交付链路</div>
+    </article>
+  </div>
+</section>
+
+<!-- TRAITS -->
+<div class="bg-w">
+  <div class="bg-inner">
+    <div class="eyebrow reveal"><div class="eyebrow-line"></div>产品核心能力</div>
+    <h2 class="sec-title reveal">从业务理解到产品落地的六项能力</h2>
+    <div class="traits-grid">
+      <div class="trait-card tc-i reveal">
+        <div class="t-icon ic-i">🎯</div>
+        <div class="trait-title">场景洞察与价值判断</div>
+        <div class="trait-desc">从用户任务、业务目标和错误成本出发识别真问题，判断 AI 是否是合适方案，并明确首期验证范围。</div>
+      </div>
+      <div class="trait-card tc-r reveal">
+        <div class="t-icon ic-r">🌐</div>
+        <div class="trait-title">AI 工作流与能力边界</div>
+        <div class="trait-desc">理解多模态、RAG 与 Agent 的典型工作流，能将模型能力拆解为输入、输出、工具、权限、兜底与异常处理。</div>
+      </div>
+      <div class="trait-card tc-a reveal">
+        <div class="t-icon ic-a">🔧</div>
+        <div class="trait-title">复杂系统与平台抽象</div>
+        <div class="trait-desc">将分散场景抽象为统一指标、对象、模板和权限，兼顾首期可用性与后续复用、扩展和治理。</div>
+      </div>
+      <div class="trait-card tc-s reveal">
+        <div class="t-icon ic-s">🤝</div>
+        <div class="trait-title">效果评测与数据闭环</div>
+        <div class="trait-desc">围绕模型质量、任务完成、人工介入、时延成本与业务价值定义指标，用测试、反馈和线上数据推动迭代。</div>
+      </div>
+      <div class="trait-card tc-i reveal">
+        <div class="t-icon ic-i">💬</div>
+        <div class="trait-title">全生命周期与 Owner 意识</div>
+        <div class="trait-desc">覆盖需求分析、方案评审、研发测试、上线验收与复盘优化，主动处理依赖、风险和多方目标冲突。</div>
+      </div>
+      <div class="trait-card tc-r reveal">
+        <div class="t-icon ic-r">🚀</div>
+        <div class="trait-title">业务价值与规模化意识</div>
+        <div class="trait-desc">不把模型上线视为终点，持续关注用户采用、效率收益和平台复用，让试点能力具备从 0→1 到 1→N 的条件。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="eyebrow reveal"><div class="eyebrow-line"></div>技能 & 工具</div>
+  <h2 class="sec-title reveal">专业能力图谱</h2>
+  <div class="skills-wrap">
+    <div>
+      <div class="skill-group-title">产品核心能力</div>
+      <div class="skill-item reveal">
+        <div class="skill-row"><span class="skill-name">产品规划与需求管理</span><span class="skill-usage">业务目标、优先级与全生命周期</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:95%;"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-row"><span class="skill-name">平台产品与复杂系统抽象</span><span class="skill-usage">指标、对象、模板、权限与配置化</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:88%;"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-row"><span class="skill-name">用户研究与竞品分析</span><span class="skill-usage">用户角色、业务流程与差异化机会</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:90%;"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-row"><span class="skill-name">数据分析与迭代闭环</span><span class="skill-usage">使用数据、效果验证与问题归因</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:92%;"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-row"><span class="skill-name">全球化客户与方案协同</span><span class="skill-usage">跨语言需求、方案澄清与复杂交付</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:82%;"></div></div>
+      </div>
+      <div class="skill-item reveal">
+        <div class="skill-row"><span class="skill-name">技术理解与 AI Native 工作流</span><span class="skill-usage">API、端云边界与 AI 辅助交付</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:90%;"></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-title">日常工具栈</div>
+      <div class="tools-grid reveal">
+        <div class="tool-tag"><span class="tool-emoji">🎨</span>Figma — 原型设计</div>
+        <div class="tool-tag"><span class="tool-emoji">🤖</span>Cursor — PRD辅助生成</div>
+        <div class="tool-tag"><span class="tool-emoji">🧠</span>Claude — 需求分析/设计</div>
+        <div class="tool-tag"><span class="tool-emoji">🎯</span>Stitch — UI辅助设计</div>
+        <div class="tool-tag"><span class="tool-emoji">💻</span>VS Code — Demo开发</div>
+        <div class="tool-tag"><span class="tool-emoji">📊</span>Gamma — Release Note</div>
+        <div class="tool-tag"><span class="tool-emoji">⌨️</span>Codex — 原型与代码协作</div>
+        <div class="tool-tag"><span class="tool-emoji">🗂️</span>Obsidian — 知识管理</div>
+      </div>
+      <div style="margin-top:28px;">
+        <div class="skill-group-title">语言能力</div>
+        <div class="language-grid reveal">
+          <div class="language-card">
+            <span class="language-name">普通话</span>
+            <span class="language-level">母语</span>
+          </div>
+          <div class="language-card">
+            <span class="language-name">英语</span>
+            <span class="language-level">工作语言 · 读写流利</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<div class="bg-w">
+  <div class="bg-inner">
+    <div class="eyebrow reveal"><div class="eyebrow-line"></div>产品落地方法</div>
+    <h2 class="sec-title reveal">从问题定义到持续迭代的五步闭环</h2>
+    <div class="method-grid reveal">
+      <div class="m-card">
+        <div class="m-num">01</div>
+        <div class="m-title">用户与业务问题</div>
+        <div class="m-desc">明确用户角色、核心任务、现有流程和业务目标，通过调研与反馈识别值得解决的问题。</div>
+      </div>
+      <div class="m-card">
+        <div class="m-num">02</div>
+        <div class="m-title">需求抽象与优先级</div>
+        <div class="m-desc">梳理对象、规则、依赖和范围，以价值、成本和风险确定优先级，把客户诉求转化为可复用能力。</div>
+      </div>
+      <div class="m-card">
+        <div class="m-num">03</div>
+        <div class="m-title">产品方案与边界</div>
+        <div class="m-desc">结合交互、数据、权限和技术约束设计方案，输出原型、PRD与验收口径，覆盖异常状态与能力边界。</div>
+      </div>
+    </div>
+    <div class="method-grid-2 reveal">
+      <div class="m-card">
+        <div class="m-num">04</div>
+        <div class="m-title">协同交付与验收</div>
+        <div class="m-desc">对齐业务、研发、测试和相关团队，管理进度、依赖与风险，确保方案按约定进入真实用户流程。</div>
+      </div>
+      <div class="m-card">
+        <div class="m-num">05</div>
+        <div class="m-title">数据反馈与平台复用</div>
+        <div class="m-desc">通过使用数据、问题记录和用户反馈验证效果，将稳定共性沉淀为模板、组件与平台能力。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="eyebrow reveal"><div class="eyebrow-line"></div>教育 & 工作经历</div>
+  <h2 class="sec-title reveal">每一步，都算数</h2>
+  <div class="tl">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2025.07 — 至今</div>
+      <div class="tl-title">产品经理 · 平台与全球化产品</div>
+      <div class="tl-org">深圳市锐明技术股份有限公司（Streamax）· 云平台产品部</div>
+      <div class="tl-desc">负责海外智能设备与车队 SaaS 平台产品，覆盖 FleetMind 4 大核心模块、SafeGPT 多模态 AI、P100 异构设备接入及欧洲、日本客户项目。工作贯穿产品规划、复杂业务抽象、PRD/原型、接口与异常规则、效果评测、跨团队推进和上线验收，连续推动 6 个 FT 版本。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2024.07 — 2024.09</div>
+      <div class="tl-title">产品经理 · 企业数字化与 AI 应用</div>
+      <div class="tl-org">大参林医药集团股份有限公司</div>
+      <div class="tl-desc">参与企业 RAG 知识助手“AI小参”，按岗位拆分知识库、权限和回答口径，并参与语料治理与效果验证；同时完成损溢系统 0→1、促销助手与 B2B 商城优化，积累从业务流程、产品设计到数据验证的完整实践。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2023.07 — 2023.09</div>
+      <div class="tl-title">产品助理 · ToB 在线考试与招聘产品</div>
+      <div class="tl-org">网才科技集团股份有限公司</div>
+      <div class="tl-desc">访谈企业招聘与考试用户，梳理角色、任务和痛点，分析 6 款竞品；将洞察转化为流程、原型与 PRD，并跟进评审、研发、测试、验收和上线。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2022.07 — 2022.09</div>
+      <div class="tl-title">项目统筹 · 人才项目与大型考试</div>
+      <div class="tl-org">长春市朝阳区人民政府人社局</div>
+      <div class="tl-desc">参与人才引进、企业评选及事业单位考试，负责资料治理、进度追踪与多方协同，支持大型人才选拔活动落地，获“优秀实习生”。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2022.09 — 2025.06</div>
+      <div class="tl-title">电子信息 · 工程硕士</div>
+      <div class="tl-org">暨南大学</div>
+      <div class="tl-desc">深耕数据处理与系统设计，培养严谨的科研与工程思维。期间对产品设计产生浓厚兴趣，系统研习用户研究与产品方法论，积累跨学科能量，为转型产品岗打下坚实基础。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-period">2018.09 — 2022.07</div>
+      <div class="tl-title">计算机科学与技术 · 本科</div>
+      <div class="tl-org">重庆理工大学</div>
+      <div class="tl-desc">系统习得算法、数据结构与工程实践，建立扎实技术底座。这份理工背景让我在产品工作中能与研发深度协作，以工程思维设计更具系统性、可扩展性的产品方案，有效降低需求歧义与沟通成本。</div>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONALITY -->
+<div class="bg-w" id="personality">
+  <div class="bg-inner">
+    <div class="eyebrow reveal"><div class="eyebrow-line"></div>性格与特质</div>
+    <h2 class="sec-title reveal">了解真实的我</h2>
+    <div class="pers-grid reveal">
+      <div class="pers-card">
+        <div class="pers-bg">ENFP</div>
+        <div class="pers-eye">MBTI · 人格类型</div>
+        <div class="pers-title" style="color:var(--indigo);">ENFP</div>
+        <div class="pers-sub">竞选者 · The Campaigner</div>
+        <div class="pers-desc">天生对可能性充满热情，善于发现事物间的关联与机会。共情力强，乐于与人连接，用感染力激励身边的人。在混乱中看见秩序，在平凡中寻找意义——让我既能发散思维，又能聚焦推进。</div>
+      </div>
+      <div class="pers-card">
+        <div class="pers-bg">♉</div>
+        <div class="pers-eye">星座 · Zodiac</div>
+        <div class="pers-title" style="color:var(--amber);">金牛座</div>
+        <div class="pers-sub">Taurus · 稳定 · 执行 · 可靠</div>
+        <div class="pers-desc">金牛赋予我踏实与执行力——承诺过的事情全力以赴。ENFP 的创意火花 × 金牛的落地精准，既能构建宏大产品愿景，又能一步一步踏实把它变成现实。</div>
+      </div>
+    </div>
+    <div class="char-grid reveal">
+      <div class="char-tag">✨ 充满热情</div>
+      <div class="char-tag">🎨 创意思维</div>
+      <div class="char-tag">💬 善于表达</div>
+      <div class="char-tag">🤗 共情力强</div>
+      <div class="char-tag">🌱 持续成长</div>
+      <div class="char-tag">🎯 结果导向</div>
+      <div class="char-tag">🔮 好奇心强</div>
+      <div class="char-tag">💪 执行踏实</div>
+      <div class="char-tag">🌊 适应力强</div>
+      <div class="char-tag">🧩 系统思维</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="eyebrow reveal"><div class="eyebrow-line"></div>About Me · 工作方式</div>
+  <h2 class="sec-title reveal">我的工作方式与生活侧面</h2>
+  <div class="principle-grid reveal">
+    <article class="principle-card"><div class="principle-icon">🧭</div><div class="principle-title">结构化拆解</div><div class="principle-desc">把模糊诉求拆成对象、规则、流程、异常与验收标准，让业务语言能够转化为团队可执行的产品定义。</div></article>
+    <article class="principle-card"><div class="principle-icon">✅</div><div class="principle-title">Owner 意识</div><div class="principle-desc">主动识别依赖、风险和未闭环事项，从方案评审持续跟进到研发、测试、验收与后续迭代。</div></article>
+    <article class="principle-card"><div class="principle-icon">🌏</div><div class="principle-title">全球化同理心</div><div class="principle-desc">理解客户、市场与跨文化团队的表达差异，把表面需求还原为真实任务，并在共性与差异之间做取舍。</div></article>
+  </div>
+  <div class="skill-group-title reveal">下班后的我</div>
+  <div class="hobby-grid reveal">
+    <div class="hb-card"><div class="hb-e">✈️</div><div class="hb-l">旅行探索</div></div>
+    <div class="hb-card"><div class="hb-e">📚</div><div class="hb-l">阅读思考</div></div>
+    <div class="hb-card"><div class="hb-e">🎸</div><div class="hb-l">吉他弹唱</div></div>
+    <div class="hb-card"><div class="hb-e">🏃</div><div class="hb-l">跑步健身</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="contact-wrap">
+    <div class="c-orb1"></div><div class="c-orb2"></div>
+    <div class="c-inner">
+      <div class="c-eye">Get in Touch</div>
+      <div class="c-title">Let's Connect.</div>
+      <div class="c-sub">期待与有趣的灵魂相遇 · 工作机会、产品交流或一杯咖啡都欢迎</div>
+      <div class="c-btns">
+        <a class="c-btn c-btn-resume" href="assets/resumes/Nora-Dong-General-Product-Manager.pdf" download>↓ 下载通用简历</a>
+        <button class="c-btn" onclick="copyEmail()">
+          <span>✉</span><span id="btn-text">cheerdn@163.com</span>
+        </button>
+        <a class="c-btn c-btn-ghost" href="mailto:cheerdn@163.com">发送邮件 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 Nora Dong · 董宁</span>
+  <span style="font-family:'Playfair Display',serif;font-style:italic;font-size:15px;">产品经理 · 平台产品 · 全球化交付</span>
+  <span>深圳市锐明技术股份有限公司</span>
+</footer>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.transform=`translate(${mx-4}px,${my-4}px)`;
+});
+(function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.transform=`translate(${rx-16}px,${ry-16}px)`;requestAnimationFrame(a);})();
+document.querySelectorAll('a,button,.ac-card,.trait-card,.proj-card,.hb-card,.char-tag,.id-chip,.m-card,.pers-card,.intent-card,.stat-card,.tool-tag').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(74,92,240,.5)';ring.style.background='rgba(74,92,240,.04)';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(74,92,240,.4)';ring.style.background='transparent';});
+});
+
+// NAV
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+
+// OBSERVER
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');if(e.target.classList.contains('skill-item'))e.target.classList.add('vis');}});
+},{threshold:.1});
+document.querySelectorAll('.reveal,.tl-item,.skill-item').forEach(el=>io.observe(el));
+
+// ACTIVE NAV
+const secs=document.querySelectorAll('[id]'),navAs=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';secs.forEach(s=>{if(scrollY>=s.offsetTop-180)cur=s.id;});
+  navAs.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+});
+
+// PROJECT ACCORDION
+function toggleProj(id){
+  const card=document.getElementById(id);
+  const body=card.querySelector('.proj-body');
+  const isOpen=card.classList.contains('open');
+  document.querySelectorAll('.proj-card.open').forEach(c=>{
+    c.classList.remove('open');
+    c.querySelector('.proj-body').style.maxHeight='0';
+  });
+  if(!isOpen){card.classList.add('open');body.style.maxHeight=body.scrollHeight+'px';}
+}
+
+// COPY EMAIL
+function copyEmail(){
+  const t=document.getElementById('btn-text');
+  navigator.clipboard.writeText('cheerdn@163.com').then(()=>{
+    t.textContent='已复制 ✓';
+    setTimeout(()=>{t.textContent='cheerdn@163.com';},2000);
+  });
+}
+
+// COUNTER ANIMATION
+function animateCounters(){
+  document.querySelectorAll('.stat-num').forEach(el=>{
+    const text=el.textContent;
+    const num=parseFloat(text);
+    if(isNaN(num))return;
+    const suffix=text.replace(/[\d.]/g,'');
+    let start=0,dur=1200,step=16;
+    const inc=num/(dur/step);
+    const timer=setInterval(()=>{
+      start+=inc;
+      if(start>=num){start=num;clearInterval(timer);}
+      el.textContent=(Number.isInteger(num)?Math.floor(start):start.toFixed(1))+suffix;
+    },step);
+  });
+}
+const statsObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){animateCounters();statsObs.disconnect();}});
+},{threshold:.3});
+const statsRow=document.querySelector('.stats-row');
+if(statsRow)statsObs.observe(statsRow);
+
+// ROLE-BASED PROFILE
+// Default: general AI product profile.
+// Use ?role=ai-application, ?role=ai-platform or ?role=ai-hardware for targeted applications.
+(function applyRoleProfile(){
+  const role=new URLSearchParams(window.location.search).get('role');
+  const isHardware=role==='ai-hardware';
+  const isPlatform=role==='ai-platform';
+  const isApplication=role==='ai-application';
+  const isAIProfile=isHardware||isPlatform||isApplication;
+  const roleName=isHardware?'AI 智能硬件产品经理':isPlatform?'AI 平台产品经理':isApplication?'AI 应用产品经理':'产品经理';
+
+  const setText=(selector,text)=>{
+    const el=document.querySelector(selector);
+    if(el)el.textContent=text;
+  };
+  const setHTML=(selector,html)=>{
+    const el=document.querySelector(selector);
+    if(el)el.innerHTML=html;
+  };
+  const setProject=(id,data)=>{
+    const card=document.getElementById(id);
+    if(!card)return;
+    setText(`#${id} .proj-title`,data.title);
+    setText(`#${id} .proj-sub`,data.sub);
+    let stage=card.querySelector('.project-stage');
+    if(data.stage){
+      if(!stage){
+        stage=document.createElement('div');
+        stage.className='project-stage';
+        card.querySelector('.proj-sub').insertAdjacentElement('afterend',stage);
+      }
+      stage.textContent=data.stage;
+    }else if(stage){stage.remove();}
+    setText(`#${id} .tag`,data.tag);
+    setHTML(`#${id} .proj-desc`,data.desc);
+    let details=card.querySelector('.proj-details');
+    if(data.details){
+      if(!details){
+        details=document.createElement('div');
+        details.className='proj-details';
+        card.querySelector('.proj-desc').insertAdjacentElement('afterend',details);
+      }
+      details.innerHTML=data.details.map(item=>`<div class="proj-detail"><div class="proj-detail-label">${item.label}</div><div class="proj-detail-text">${item.text}</div></div>`).join('');
+    }else if(details){details.remove();}
+    setHTML(`#${id} .proj-pills`,data.pills.map(item=>`<div class="proj-pill">${item}</div>`).join(''));
+    setText(`#${id} .result-label`,data.resultLabel);
+    setHTML(`#${id} .result-val`,data.result);
+    const visuals={
+      p1:{path:'<path d="M24 4 40 10v12c0 11-7 18-16 22C15 40 8 33 8 22V10Z"/><path d="m16 24 5 5 11-12"/>',labels:['多模态输入','结构化输出','人机复核']},
+      p2:{path:'<rect x="5" y="7" width="38" height="34" rx="5"/><path d="M5 17h38M18 17v24M24 33v-7m7 7V22m7 11v-5M10 23h3m-3 6h3m-3 6h3"/>',labels:['配置化看板','模板与指标',isAIProfile?'可信 AI 规划':'业务管理闭环']},
+      p3:{path:'<circle cx="24" cy="24" r="19"/><ellipse cx="24" cy="24" rx="8" ry="19"/><path d="M5 24h38M9 13h30M9 35h30"/>',labels:['跨语言澄清','平台复用','协同交付']},
+      p4:{path:'<path d="M24 12c-6-5-13-6-20-4v30c7-2 14-1 20 4 6-5 13-6 20-4V8c-7-2-14-1-20 4Zm0 0v30M10 17l8 2m-8 6 8 2m12-8 8-2m-8 10 8-2"/>',labels:['角色知识库','语料治理','效果验证']},
+      p5:{path:'<rect x="5" y="7" width="15" height="25" rx="3"/><path d="M10 26h5m5-7h9m-4-4 4 4-4 4M33 14a7 7 0 0 1 10 7 6 6 0 0 1-1 12H29m-9 6h13m-4-4 4 4-4 4"/>',labels:['异构设备','异步任务','能力门控']}
+    };
+    const visual=visuals[id];
+    if(visual){
+      const resultCard=card.querySelector('.proj-result');
+      let illustration=resultCard.querySelector('.result-visual');
+      if(!illustration){illustration=document.createElement('div');illustration.className='result-visual';resultCard.appendChild(illustration);}
+      illustration.innerHTML=`<div class="result-icon" aria-hidden="true"><svg viewBox="0 0 48 48">${visual.path}</svg></div><div class="result-cues">${visual.labels.map(label=>`<span class="result-cue">${label}</span>`).join('')}</div>`;
+    }
+  };
+
+  document.title=`Nora Dong · ${roleName}`;
+  setHTML('.h-badge',`<div class="h-dot"></div>${roleName}`);
+  if(isAIProfile)setHTML('.h-name','让 AI 能力，<br><em>进入真实业务。</em>');
+  setText('.profile-signal:first-child span:last-child',roleName);
+  setHTML('.h-summary',isHardware
+    ?'计算机与电子信息双背景的<strong>AI 智能硬件产品经理</strong>，具备设备、云平台与多模态模型协同经验。负责 SafeGPT 人因 AI 产品与 FleetMind 核心模块，将视频、设备和业务数据转化为<strong>结构化结论、评测指标、人工复核流程与可执行任务</strong>；具备欧洲、日本项目经验，能够在端云协同、全球化与复杂约束下推动落地。'
+    :isPlatform
+    ?'计算机与电子信息双背景的<strong>AI 平台产品经理</strong>，负责 FleetMind Dashboard、Reports、酒精检测、车辆维护 4 个核心模块及 AI 工作台规划。将分散业务抽象为<strong>指标、对象、模板、权限与操作能力</strong>，并以“收件箱—对话—自动化”串联发现、决策和持续执行，关注 Agent 的证据、人审、权限与审计边界。'
+    :isApplication
+    ?'计算机与电子信息双背景的<strong>AI 应用产品经理</strong>，具备多模态 AI、RAG 与 AI 工作台规划经验。围绕真实任务设计<strong>输入输出、上下文、效果评测、人工兜底与任务闭环</strong>，覆盖 SafeGPT、企业知识助手及 FleetMind AI 工作台；能够协同算法、研发、测试与业务，把模型能力转化为可验证、可迭代的体验。'
+    :'计算机与电子信息双背景的<strong>产品经理</strong>，具备智能设备 SaaS、平台型产品、ToB 复杂业务与 ToC 应用实践。擅长从用户任务和业务目标出发，将分散需求抽象为<strong>可配置、可复用的产品能力</strong>，完整覆盖调研、方案、PRD/原型、评审验收、数据分析与迭代，并在全球化、多语言和软硬件约束下推进交付。');
+
+  const intentCards=document.querySelectorAll('.intent-card .intent-val');
+  if(intentCards.length>=4){
+    intentCards[0].innerHTML=`${roleName}<br><span style="font-size:12px;color:var(--muted);font-weight:300;">/ ${isHardware?'智能硬件 · AI软件':isPlatform?'Agent平台 · 企业AI':isApplication?'LLM应用 · 智能助手':'AI应用 · 平台产品'}</span>`;
+    intentCards[1].innerHTML='深圳 · 广州<br><span style="font-size:12px;color:var(--muted);font-weight:300;">/ 接受全球化团队</span>';
+    intentCards[2].innerHTML=isHardware
+      ?'智能硬件 · AI软件<br><span style="font-size:12px;color:var(--muted);font-weight:300;">/ 多模态 · 端云协同</span>'
+      :isPlatform
+      ?'企业AI · 平台产品<br><span style="font-size:12px;color:var(--muted);font-weight:300;">/ RAG · Agent-ready</span>'
+      :isApplication
+      ?'AI应用 · 智能助手<br><span style="font-size:12px;color:var(--muted);font-weight:300;">/ 多模态 · RAG</span>'
+      :'AI软件 · 智能设备<br><span style="font-size:12px;color:var(--muted);font-weight:300;">/ 多模态 · RAG · 平台</span>';
+    intentCards[3].innerHTML='在职<br><span style="font-size:12px;color:var(--sage);font-weight:400;">● 积极沟通中</span>';
+  }
+
+  const chips=document.querySelectorAll('.id-chip');
+  if(chips.length>=4){
+    chips[0].textContent='🤖 多模态 · RAG';
+    chips[1].textContent=isHardware?'🔌 设备 · 云 · AI':isPlatform?'🧩 平台抽象 · Agent-ready':'🧩 AI工作流 · 产品化';
+    chips[2].textContent='📊 AI评测 · 数据指标';
+    chips[3].textContent='🌏 全球化产品';
+  }
+
+  setText('#work .sec-title','一年多工作的产品实践与成果');
+  const nums=document.querySelectorAll('.stat-num');
+  const labels=document.querySelectorAll('.stat-label');
+  const statValues=isAIProfile?['2','4','6','100+']:['4','6','100+','5'];
+  const statLabels=isAIProfile?['AI产品实践','新平台核心模块','连续FT版本交付','平台设备问题闭环']:['新平台核心模块','连续FT版本交付','平台设备问题闭环','代表性产品实践'];
+  nums.forEach((el,index)=>{if(statValues[index])el.textContent=statValues[index];});
+  labels.forEach((el,index)=>{if(statLabels[index])el.textContent=statLabels[index];});
+  setText('#work .eyebrow[style]','Selected Impact · 代表项目');
+  setText('#work h2[style]','五类可迁移的产品能力');
+
+  setProject('p1',{
+    title:'SafeGPT V2.6.7 · 多模态 AI 安全产品',
+    sub:'唯一产品负责人 · 已发布 · 模型能力产品化',
+    stage:'已发布',
+    tag:'AI 产品化',
+    desc:'SafeGPT V2.6.7 已发布，我是该版本唯一产品负责人。将“视频理解”从模型能力转化为可被业务系统消费的产品流程：统一前视/舱内视频与车辆摘要输入，设计 <strong>verdict、reason、scene</strong> 结构化输出，并以高风险场景的证据边界、人机复核和异常降级保障产品安全。',
+    details:[
+      {label:'项目背景',text:'对碰撞、侧翻、疑似事故、疲劳等高风险报警进行云端二次审核与结构化解释，降低人工回看成本。'},
+      {label:'关键决策',text:'证据不足时优先输出“存疑”，不强行二分类；reason 只保留判定依据，scene 服务救援与保险场景。'},
+      {label:'我的职责',text:'唯一产品负责人，负责需求分层、输入输出规则、行业层接入、展示口径、多语言与单位适配，并协同算法、后端、前端和测试落地。'},
+      {label:'阶段结果',text:'SafeGPT V2.6.7 已发布，形成可被后端分流、前端展示和人工复核稳定消费的 AI 产品流程。'}
+    ],
+    pills:['多模态输入设计','结构化输出 Schema','AI 评测口径','人工复核闭环','多语言与单位适配'],
+    resultLabel:'项目结果',
+    result:'SafeGPT V2.6.7<br><span style="font-size:16px;">已发布</span><br><span style="font-size:14px;opacity:.7;">结构化 AI · 人机复核</span>'
+  });
+  setProject('p2',{
+    title:isAIProfile?'FleetMind · 平台核心模块与 AI 工作台规划':'FleetMind · 平台规划与配置化产品',
+    sub:isAIProfile?'Dashboard · Reports · 酒精检测 · 车辆维护 · AI 工作台规划':'4 大核心模块 · 配置化设计 · 评审完成，研发中',
+    stage:'方案评审完成 · 研发中',
+    tag:isAIProfile?'AI 平台规划':'平台产品',
+    desc:isAIProfile?'作为 FleetMind 新平台 Dashboard、Reports、酒精检测、车辆维护 4 大核心模块唯一产品负责人，完成从旧平台能力盘点、用户任务抽象到配置化方案设计与评审；同时规划 AI 工作台，以“收件箱—对话—自动化”连接主动发现、分析生成、人审决策和持续执行。AI 工作台属于规划与方案设计，不表述为已上线能力。':'作为 FleetMind 新平台 Dashboard、Reports、酒精检测、车辆维护 4 大核心模块唯一产品负责人，从旧平台功能和客户需求中识别共性，重构业务分类、指标与任务路径。兼顾开箱即用、角色个性化和平台复用，已完成方案评审，并面向多家客户宣讲获得积极反馈；同时探索 AI 工作台，作为后续智能化规划而非已上线成果。',
+    details:[
+      {label:'Dashboard',text:'将 172 个统计项收敛为 73 个，提供 10 张默认卡片与 6 类可视化，统一对象维度、时间范围、图表和详情导出规则。'},
+      {label:'Reports',text:'将 43 个报表收敛为 18 个模板、5 个业务分类和 8 个默认报表，梳理 My / All Reports、定时投递、对象范围与权限边界。'},
+      {label:'酒精检测',text:'围绕异常记录筛选、图片与视频证据、司机绑定、详情查询和导出审计，设计“设备数据—身份—证据—处置”的安全闭环。'},
+      {label:'车辆维护',text:'围绕维护事项、计划、提醒、工单与完成记录梳理对象和状态，连接车辆资产、时间计划、费用与执行结果。'},
+      {label:'AI 工作台',text:'规划收件箱、对话、自动化三种模式：AI 主动发现事项，自然语言查询与生成报表，并将成熟对话沉淀为定时任务。'},
+      {label:'可信执行',text:'重要建议展示数据来源和推理依据；锁车、通知、任务创建等关键动作必须人工确认，并保留来源、状态、投递对象和操作记录。'},
+      {label:'我的职责',text:'负责用户任务、信息架构、PRD、交互原型、指标与模板治理、权限规则、异常边界、方案评审及研发跟进。'}
+    ],
+    pills:isAIProfile?['Dashboard 172→73','Reports 43→18','酒精检测闭环','Inbox · Chat · Automation','人审 · 权限 · 审计']:['Dashboard 172→73','Reports 43→18','4 大核心模块','配置化与权限','客户宣讲与方案评审'],
+    resultLabel:'产品范围',
+    result:isAIProfile?'4 个核心模块<br><span style="font-size:16px;">+ AI 工作台蓝图</span><br><span style="font-size:14px;opacity:.7;">发现 → 决策 → 执行 → 追踪</span>':'4 个核心模块<br><span style="font-size:16px;">配置化平台方案</span><br><span style="font-size:14px;opacity:.7;">指标 172→73 · 报表 43→18</span>'
+  });
+  setProject('p3',{
+    title:'全球化复杂产品 · 可复用能力设计',
+    sub:'用户任务抽象 · 配置化平台 · 多版本推进',
+    stage:'已交付 · 持续迭代',
+    tag:'全球化产品',
+    desc:'面向欧洲、日本等海外项目，将多语言资料和客户表面需求还原为用户任务、业务规则、系统模块和验收标准，并将稳定共性沉淀为平台能力、市场差异交由配置承接。覆盖竞品研究、解决方案、跨语言澄清、多版本交付与平台治理。',
+    details:[
+      {label:'AddSecure 欧洲项目',text:'面向 60,000+ 台车辆场景，分析 Samsara、Wialon、Netradyne，重构安全评分、等级区间、配置化看板与事件收藏；项目 ARR 目标 90 万美元并已超额完成。'},
+      {label:'日本 FMS 项目',text:'将日文资料转化为模块、规则、疑问和验收标准；推动 60+ 项跨语言需求收敛，闭环 100+ 个平台设备问题，独立推进 4 个版本。'},
+      {label:'交付物与协同',text:'输出 57 页原型与 2.5 万字 PRD，组织客户、海外业务、研发、测试与设备团队围绕范围、技术边界和验收口径持续对齐。'},
+      {label:'平台治理',text:'推动 FT/PT/SBS 入口、通用设置、权限和配置能力统一，连续推进 6 个 FT 版本，降低跨市场重复建设。'}
+    ],
+    pills:['跨语言需求映射','配置化解决方案','竞品与市场洞察','100+ 问题闭环','6 个 FT 版本'],
+    resultLabel:'交付能力',
+    result:'欧洲 × 日本<br><span style="font-size:16px;">复杂项目落地</span><br><span style="font-size:14px;opacity:.7;">客户语言 → 可执行产品定义</span>'
+  });
+  setProject('p5',{
+    title:'P100 · 旧设备接入 FT-Cloud',
+    sub:'唯一产品负责人 · AddSecure · 1W+ 台设备 · 已集成',
+    stage:'已集成完毕',
+    tag:'平台集成',
+    desc:'P100 已完成 FT-Cloud 平台集成。我是该项目唯一产品负责人。面对第三方设备无协议、无操作文档、交互机制未知且只能在海外上线等限制，从零建立验证路径：协调 IT 开通海外域名与端口，拉通客户、技术支持、研发和测试完成远程操作与联调，逐步验证设备通信和平台功能。最终完成全部预设功能集成，覆盖 AddSecure 客户 1W+ 台设备场景，并形成 ARR 50 万+美元的额外收益。',
+    details:[
+      {label:'项目难点',text:'P100 是客户采购的第三方设备，双方均缺少设备协议、操作文档和平台交互资料；设备只能在海外上线，接入方式与联调路径均需从零探索。'},
+      {label:'关键方案',text:'以 IMEI 完成识别与绑定，根据上报时间、点火状态和心跳推断设备状态；针对异步视频和能力差异，设计能力门控、状态反馈与异常提示。'},
+      {label:'推进与协同',text:'协调 IT 申请海外域名和端口，拉通客户与技术支持远程操作设备，并组织研发、测试逐项验证通信、注册、状态、定位、事件与视频链路。'},
+      {label:'阶段结果',text:'在信息和环境均不完备的条件下建立可验证的联调路径，最终完成全部预设功能集成，覆盖 1W+ 台设备场景，并形成 ARR 50 万+美元额外收益。'}
+    ],
+    pills:['1W+ 台设备','IMEI 注册绑定','异步视频请求','设备能力门控','ARR 50万+美元'],
+    resultLabel:'业务价值',
+    result:'ARR 50万+美元<br><span style="font-size:16px;">额外收益</span><br><span style="font-size:14px;opacity:.7;">P100 已集成 · 1W+ 台设备场景</span>'
+  });
+  setProject('p4',{
+    title:'AI小参 · 企业 RAG 知识助手',
+    sub:'角色化知识库 · 语料治理 · 回答效果优化',
+    stage:'实习项目 · 已验证',
+    tag:'RAG 产品',
+    desc:'参与企业内部知识助手的产品优化。针对门店不同岗位的知识边界、权限和答案口径差异，按角色拆分知识库并参与语料清洗、问题归类与效果验证。实践验证了 RAG 产品的关键不在“堆知识”，而在检索质量、权限正确性、答案依据和持续评测。',
+    pills:['RAG知识库','角色权限','语料治理','效果评测','用户反馈'],
+    resultLabel:'阶段结果',
+    result:'语料缩减约40%<br><span style="font-size:14px;opacity:.7;">准确率 90% · 使用率 40%→70%</span>'
+  });
+
+  const projectList=document.querySelector('.proj-list');
+  const projectOrder=isHardware?['p1','p5','p2','p3','p4']:isPlatform?['p2','p5','p4','p1','p3']:isApplication?['p1','p4','p5','p2','p3']:['p2','p3','p5','p1','p4'];
+  if(projectList){
+    projectOrder.forEach(id=>{const card=document.getElementById(id);if(card)projectList.appendChild(card);});
+    // 编号反映当前页面展示顺序，而不是项目在源码中的固定 ID。
+    projectList.querySelectorAll('.proj-card').forEach((card,index)=>{
+      const number=card.querySelector('.proj-num');
+      if(number)number.textContent=String(index+1).padStart(2,'0');
+    });
+  }
+
+  const traitTexts=isAIProfile?[
+    ['场景洞察与价值判断','从用户任务、业务目标和错误成本出发识别真问题，判断 AI 是否是合适方案，并明确首期验证范围。'],
+    ['AI 工作流与能力边界','理解多模态、RAG 与 Agent 的典型工作流，能将模型能力拆解为输入、输出、工具、权限、兜底与异常处理。'],
+    ['复杂系统与平台抽象','将分散场景抽象为统一指标、对象、模板和权限，兼顾首期可用性与后续复用、扩展和治理。'],
+    ['效果评测与数据闭环','围绕模型质量、任务完成、人工介入、时延成本与业务价值定义指标，用测试、反馈和线上数据推动迭代。'],
+    ['全生命周期与 Owner 意识','覆盖需求分析、方案评审、研发测试、上线验收与复盘优化，主动处理依赖、风险和多方目标冲突。'],
+    ['业务价值与规模化意识','不把模型上线视为终点，持续关注用户采用、效率收益和平台复用，让试点能力具备从 0→1 到 1→N 的条件。']
+  ]:[
+    ['用户洞察与问题定义','从用户角色、任务和业务目标出发，通过访谈、一线反馈与竞品分析识别真问题，明确范围与优先级。'],
+    ['复杂业务与系统抽象','将跨模块需求还原为对象、状态、规则和流程，把技术限制转化为可理解、可执行、可验收的产品边界。'],
+    ['平台化与配置化设计','将稳定共性沉淀为指标、模板、权限和通用能力，用配置承接不同角色、客户与市场差异。'],
+    ['数据分析与迭代闭环','结合使用数据、业务指标和用户反馈定位问题，形成问题归因、方案设计、效果验证与持续优化的闭环。'],
+    ['全生命周期交付','覆盖调研、方案、PRD与原型、评审、研发测试、验收和迭代，主动管理依赖、风险与多方目标。'],
+    ['全球化与跨团队协同','在欧洲、日本等客户项目中完成跨语言澄清、方案沟通与问题闭环，协同业务、研发、测试、中台和设备团队推进交付。']
+  ];
+  document.querySelectorAll('.trait-card').forEach((card,index)=>{
+    const item=traitTexts[index];
+    if(!item)return;
+    const title=card.querySelector('.trait-title');
+    const desc=card.querySelector('.trait-desc');
+    if(title)title.textContent=item[0];
+    if(desc)desc.textContent=item[1];
+  });
+  const skillNames=isAIProfile?['AI Native 产品工作流','平台产品与复杂系统抽象','数据评测与迭代闭环','产品全生命周期交付','全球化客户与方案协同','智能设备与技术协同']:['产品规划与需求管理','平台产品与复杂系统抽象','用户研究与竞品分析','数据分析与迭代闭环','全球化客户与方案协同','技术理解与 AI Native 工作流'];
+  const skillUsage=isAIProfile?['多模态、RAG、Agent与人机协同','指标、对象、模板、权限与配置化','模型效果、使用数据与问题归因','调研、方案、PRD、评审、验收','欧洲、日本项目与跨语言需求','API、Webhook、异步任务与能力门控']:['业务目标、优先级与全生命周期','指标、对象、模板、权限与配置化','用户角色、业务流程与差异化机会','使用数据、效果验证与问题归因','跨语言需求、方案澄清与复杂交付','API、端云边界与 AI 辅助交付'];
+  document.querySelectorAll('.skills-wrap .skill-name').forEach((el,index)=>{
+    if(skillNames[index])el.textContent=skillNames[index];
+  });
+  document.querySelectorAll('.skills-wrap .skill-usage').forEach((el,index)=>{
+    if(skillUsage[index])el.textContent=skillUsage[index];
+  });
+  const firstTimeline=document.querySelector('.tl-item');
+  if(firstTimeline){
+    setText('.tl-item .tl-title',isAIProfile?'产品经理 · AI与平台产品':'产品经理 · 平台与全球化产品');
+    setText('.tl-item .tl-org','深圳市锐明技术股份有限公司（Streamax）· 云平台产品部');
+    setText('.tl-item .tl-desc','负责海外智能设备与车队 SaaS 平台产品，覆盖 FleetMind 4 大核心模块、SafeGPT 多模态 AI、P100 异构设备接入及欧洲、日本客户项目。工作贯穿产品规划、复杂业务抽象、PRD/原型、接口与异常规则、效果评测、跨团队推进和上线验收，连续推动 6 个 FT 版本。');
+  }
+  const personality=document.getElementById('personality');
+  if(personality)personality.style.display='none';
+  {
+    const traitsContainer=document.querySelector('.traits-grid').parentElement;
+    traitsContainer.querySelector('.eyebrow').innerHTML=`<div class="eyebrow-line"></div>${isAIProfile?'AI 产品能力':'产品核心能力'}`;
+    traitsContainer.querySelector('.sec-title').textContent=isAIProfile?'面向主流 AI 产品岗位的六项能力':'从业务理解到产品落地的六项能力';
+    const methodsContainer=document.querySelector('.method-grid').parentElement;
+    methodsContainer.querySelector('.eyebrow').innerHTML=`<div class="eyebrow-line"></div>${isAIProfile?'AI 产品方法论':'产品落地方法'}`;
+    methodsContainer.querySelector('.sec-title').textContent=isAIProfile?'从场景判断到持续迭代的五步闭环':'从问题定义到持续迭代的五步闭环';
+    const methods=isAIProfile?[
+      ['场景与价值假设','先定义用户任务、现有流程、关键痛点和成功标准，再判断 AI 的必要性，并用价值、成本与风险确定 MVP。'],
+      ['技术边界与产品方案','结合模型、RAG、Agent、工具调用或端云能力，明确输入输出、权限、上下文、异常降级和人工兜底。'],
+      ['评测先行','在研发前定义样本、基线和验收口径，区分模型指标、体验指标与业务指标，重点关注错误成本与安全边界。'],
+      ['端到端上线与协同','用 PRD、原型、Schema 和验收规则对齐算法、研发、测试与业务，管理依赖和风险，推动产品真正进入用户流程。'],
+      ['反馈学习与 1→N','通过用户反馈、线上数据和失败样本持续迭代；将稳定共性沉淀为模板、组件和平台能力，支撑规模化复用。']
+    ]:[
+      ['用户与业务问题','明确用户角色、核心任务、现有流程和业务目标，通过调研与反馈识别值得解决的问题。'],
+      ['需求抽象与优先级','梳理对象、规则、依赖和范围，以价值、成本和风险确定优先级，把客户诉求转化为可复用能力。'],
+      ['产品方案与边界','结合交互、数据、权限和技术约束设计方案，输出原型、PRD与验收口径，覆盖异常状态与能力边界。'],
+      ['协同交付与验收','对齐业务、研发、测试和相关团队，管理进度、依赖与风险，确保方案按约定进入真实用户流程。'],
+      ['数据反馈与平台复用','通过使用数据、问题记录和用户反馈验证效果，将稳定共性沉淀为模板、组件与平台能力。']
+    ];
+    document.querySelectorAll('.m-card').forEach((card,index)=>{setTextForCard(card,'.m-title',methods[index][0]);setTextForCard(card,'.m-desc',methods[index][1]);});
+  }
+  function setTextForCard(card,selector,text){const el=card.querySelector(selector);if(el)el.textContent=text;}
+  setText('.c-sub',isHardware?'期待与关注 AI、智能硬件及全球化产品的人交流机会。':isPlatform?'期待与关注 Agent、企业AI与平台产品的人交流机会。':isApplication?'期待与关注大模型应用、智能助手与产品创新的人交流机会。':'期待交流产品设计、平台建设与全球化业务，也欢迎聊聊新的合作机会。');
+  setText('footer span:nth-child(2)',isHardware?'AI 智能硬件产品经理 · 多模态AI · 全球化产品':isPlatform?'AI 平台产品经理 · RAG · Agent-ready 平台':isApplication?'AI 应用产品经理 · 多模态 · RAG':'产品经理 · 平台产品 · 全球化交付');
+})();
+</script>
+</body>
+</html>
